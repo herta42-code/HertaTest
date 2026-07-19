@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulated Universe Protocol: คู่มือพลังเวทมนตร์ Python ฉบับหุ่นเชิดอัจฉริยะ</title>
+    <meta name="description" content="คู่มือการเขียนโปรแกรมภาษา Python สไตล์แฟนตาซีเวทมนตร์ห้องวิจัย Herta สำหรับนักศึกษาวิทยาการคอมพิวเตอร์และผู้เริ่มต้น">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js Syntax Highlighting CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="index.css">
+    
+    <!-- Canvas Confetti for celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Pyodide Python in WebAssembly -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+</head>
+<body>
+
+    <!-- Header Area -->
+    <header class="main-header" id="top-header">
+        <div class="header-logo" id="header-logo-container">
+            <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="logo-text">
+                <span class="logo-title">Genius Society #83</span>
+                <span class="logo-subtitle">Simulated Universe Protocol</span>
+            </div>
+        </div>
+        <nav class="header-nav" aria-label="เมนูหลัก">
+            <a href="#" class="nav-link active" data-target="intro"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+            <a href="#" class="nav-link" data-target="lesson-1"><i class="fa-solid fa-book-open"></i> คู่มือจำลอง</a>
+            <a href="#" class="nav-link" data-target="playground"><i class="fa-solid fa-code"></i> โต๊ะทดลองร่ายมนตร์ (Playground)</a>
+            <a href="#" class="nav-link" id="contact-herta-trigger"><i class="fa-solid fa-paper-plane"></i> ติดต่อสมาคม</a>
+        </nav>
+        <div class="header-status">
+            <div class="status-badge"><span class="pulse-dot"></span> Online</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar" aria-label="สารบัญบทเรียน">
+            <div class="sidebar-progress">
+                <div class="progress-info">
+                    <span class="progress-label">ความสำเร็จโปรโตคอล</span>
+                    <span class="progress-percent" id="global-progress-percent">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu" id="sidebar-menu-list">
+                <button class="menu-item active" data-target="intro">
+                    <span class="menu-num">🚀</span>
+                    <span class="menu-text">บทนำ: แผนที่การเดินทางท่องจักรวาลจำลอง</span>
+                    <span class="menu-status"><i class="fa-solid fa-house"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-1">
+                    <span class="menu-num">1</span>
+                    <span class="menu-text">บทที่ 1: ติดตั้งห้องแล็บจำลอง (Setup)</span>
+                    <span class="menu-status" id="status-1"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-2">
+                    <span class="menu-num">2</span>
+                    <span class="menu-text">บทที่ 2: เวทมนตร์พื้นฐาน & ตัวแปร</span>
+                    <span class="menu-status" id="status-2"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-3">
+                    <span class="menu-num">3</span>
+                    <span class="menu-text">บทที่ 3: ตัวดำเนินการทางคณิตศาสตร์</span>
+                    <span class="menu-status" id="status-3"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-4">
+                    <span class="menu-num">4</span>
+                    <span class="menu-text">บทที่ 4: ประตูทางเลือก (Conditionals)</span>
+                    <span class="menu-status" id="status-4"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-5">
+                    <span class="menu-num">5</span>
+                    <span class="menu-text">บทที่ 5: วงแหวนวนซ้ำ (Loops)</span>
+                    <span class="menu-status" id="status-5"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-6">
+                    <span class="menu-num">6</span>
+                    <span class="menu-text">บทที่ 6: กล่องเก็บของอาเรย์ (Lists)</span>
+                    <span class="menu-status" id="status-6"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-7">
+                    <span class="menu-num">7</span>
+                    <span class="menu-text">บทที่ 7: ดัชนีสารานุกรม (Dictionaries)</span>
+                    <span class="menu-status" id="status-7"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-8">
+                    <span class="menu-num">8</span>
+                    <span class="menu-text">บทที่ 8: มนตราเรียกใช้ซ้ำ (Functions)</span>
+                    <span class="menu-status" id="status-8"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-9">
+                    <span class="menu-num">9</span>
+                    <span class="menu-text">บทที่ 9: พิมพ์เขียวหุ่นเชิด (OOP Basics)</span>
+                    <span class="menu-status" id="status-9"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-10">
+                    <span class="menu-num">10</span>
+                    <span class="menu-text">บทที่ 10: การสืบทอดพิมพ์เขียว (OOP Class)</span>
+                    <span class="menu-status" id="status-10"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-11">
+                    <span class="menu-num">11</span>
+                    <span class="menu-text">บทที่ 11: ดักจับสิ่งปนเปื้อน (Exceptions)</span>
+                    <span class="menu-status" id="status-11"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="lesson-12">
+                    <span class="menu-num">12</span>
+                    <span class="menu-text">บทที่ 12: การเปิดขอบเขตโลกภายนอก</span>
+                    <span class="menu-status" id="status-12"><i class="fa-regular fa-circle"></i></span>
+                </button>
+                <button class="menu-item" data-target="playground">
+                    <span class="menu-num">⚡</span>
+                    <span class="menu-text">ห้องทดลองเขียนโค้ด (Playground)</span>
+                    <span class="menu-status" id="status-playground"><i class="fa-solid fa-code"></i></span>
+                </button>
+                <button class="menu-item" data-target="conclusion">
+                    <span class="menu-num">🏆</span>
+                    <span class="menu-text">บทสรุปการทดสอบ: ความสำเร็จขั้นแรก</span>
+                    <span class="menu-status" id="status-conclusion"><i class="fa-regular fa-circle"></i></span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content-pane">
+            
+            <!-- บทนำ: แผนที่การเดินทางท่องจักรวาลจำลอง -->
+            <section class="lesson-section active" id="content-intro">
+                <div class="hero-banner" style="background-image: linear-gradient(rgba(142, 122, 181, 0.4), rgba(45, 39, 54, 0.95)), url('assets/herta_library.jpg');">
+                    <div class="hero-content">
+                        <span class="hero-badge">GENIUS PROTOCOL v2.0</span>
+                        <h1 class="hero-title">SIMULATED UNIVERSE PROTOCOL</h1>
+                        <p class="hero-subtitle">คู่มือพลังเวทมนตร์ Python ฉบับหุ่นเชิดอัจฉริยะ</p>
+                    </div>
+                </div>
+
+                <div class="content-body">
+                    <!-- Herta Callout Box -->
+                    <div class="herta-callout">
+                        <div class="herta-avatar-frame">
+                            <img src="assets/herta_waving.jpg" alt="Herta" class="herta-avatar-img">
+                        </div>
+                        <div class="herta-speech-bubble">
+                            <h3 class="herta-name">Herta (สมาคมอัจฉริยะลำดับที่ 83)</h3>
+                            <p class="herta-quote">"ยินดีต้อนรับสู่โปรโตคอลจําลองของฉัน! เลิกทำหน้ามึนงงเหมือนคนไม่เคยอ่านหนังสือเรียนได้แล้ว เปิดหน้าถัดไปแล้วมาเริ่มประกอบพลังปัญญกันเลย!"</p>
+                        </div>
+                    </div>
+
+                    <div class="intro-grid">
+                        <div class="intro-card pink-accent">
+                            <h3><i class="fa-solid fa-compass"></i> แผนที่การฝึกฝน</h3>
+                            <p>โปรโตคอลการจำลองนี้แบ่งออกเป็น 12 บทเรียนเวทมนตร์หลักและบททดสอบสรุป โดยเริ่มตั้งแต่การจัดตั้งห้องแล็บพื้นฐาน ไปจนถึงแนวคิดขั้นกลางอย่าง OOP, Exceptions และการเขียนไฟล์ เพื่อเตรียมตัวเป็นหุ่นเชิดผู้ชาญฉลาด</p>
+                        </div>
+                        <div class="intro-card purple-accent">
+                            <h3><i class="fa-solid fa-circle-play"></i> วิธีการเรียนรู้</h3>
+                            <p>ในแต่ละบทเรียนจะมีเนื้อหา ทฤษฎีโค้ด และ **แบบทดสอบท้ายบท** เมื่อทำผ่านจะได้รับดวงตราพลังงาน และสามารถทดสอบพิมพ์โค้ดรันได้จริงผ่าน **โต๊ะเขียนมนตรา (Python Sandbox)** ด้านขวาได้ตลอดเวลา!</p>
+                        </div>
+                    </div>
+
+                    <!-- Learning Tips Component -->
+                    <div class="tips-box">
+                        <div class="tips-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <div class="tips-content">
+                            <h4>เคล็ดวิชาจำลองพลังเวทมนตร์</h4>
+                            <p>“อย่าเพิ่งท่องจำโค้ด! ให้ทำความเข้าใจตรรกะเบื้องหลัง ลองนึกภาพตามคำอุปมาเปรียบเทียบในห้องทดลองเวทมนตร์ของฉัน ทุกโครงสร้างโค้ดมีชีวิตและวัตถุประสงค์เฉพาะตัว”</p>
+                        </div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary btn-large next-chapter-btn" data-next="lesson-1">
+                            เริ่มขั้นตอนติดตั้งห้องแล็บ (บทที่ 1) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 1: การติดตั้งห้องแล็บจำลอง (Setup) -->
+            <section class="lesson-section" id="content-lesson-1">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 1</span>
+                    <h2>การติดตั้งห้องแล็บจำลอง (Setup)</h2>
+                </div>
+                
+                <div class="content-body">
+                    <p>ก่อนที่เราจะเริ่มร่ายเวทมนตร์ Python เราจำเป็นต้องสร้างและตั้งโต๊ะทำงานเวทมนตร์ของเราในโลกแห่งความเป็นจริงเสียก่อน ขั้นตอนนี้เปรียบเสมือนการสร้างหุ่นเชิดและปัดฝุ่นห้องปฏิบัติการ!</p>
+                    
+                    <h3>1. การติดตั้งตัวแปลภาษา Python</h3>
+                    <p>ดาวน์โหลดตัวแปลภาษาระดับจักรวาลจากเว็บทางการ <a href="https://www.python.org" target="_blank" rel="noopener">python.org</a></p>
+                    <div class="alert-box alert-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span><strong>กฎเหล็กระหว่างการติดตั้ง:</strong> ห้ามลืมติ๊กถูกช่อง <strong>"Add Python to PATH"</strong> ที่ด้านล่างสุดของหน้าต่างติดตั้งเด็ดขาด! หากข้ามจุดนี้ไป ระบบปฏิบัติการของคุณจะไม่สามารถค้นหาเวทมนตร์ Python เจอ</span>
+                    </div>
+
+                    <h3>2. โต๊ะเขียนมนตรา (แนะนำ Visual Studio Code)</h3>
+                    <p>ในการบันทึกตัวอักษรเวทมนตร์ เราต้องใช้โปรแกรมแก้ไขโค้ด (Code Editor) ระดับพรีเมียม แนะนำให้ดาวน์โหลดและติดตั้ง <strong>Visual Studio Code (VS Code)</strong> ซึ่งรองรับการเขียนอักขระเวทมนตร์ได้ลื่นไหลที่สุด</p>
+
+                    <h3>3. การติดตั้งส่วนเสริม Python (Microsoft Extensions)</h3>
+                    <p>เมื่อติดตั้ง VS Code เสร็จแล้ว ให้กดปุ่มรูปสี่เหลี่ยมด้านซ้าย (Extensions) ค้นหาคำว่า <strong>"Python"</strong> (ของ Microsoft) และกด Install เพื่อเปิดโหมดผู้ช่วยวิเคราะห์เวทมนตร์อัจฉริยะ</p>
+
+                    <!-- Interactive OS Switcher -->
+                    <div class="interactive-component" id="os-switcher-widget">
+                        <h4><i class="fa-solid fa-terminal"></i> ทดสอบการเรียกใช้งานผ่าน Terminal</h4>
+                        <p class="description">เลือกคำแนะนำตามระบบปฏิบัติการของอุปกรณ์คุณ เพื่อทดสอบการติดตั้ง:</p>
+                        
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-os="windows"><i class="fa-brands fa-windows"></i> Windows</button>
+                            <button class="tab-btn" data-os="macos"><i class="fa-brands fa-apple"></i> macOS / Linux</button>
+                        </div>
+                        
+                        <div class="tab-content" id="os-windows-content">
+                            <p>1. กดปุ่ม <kbd>Win + R</kbd> พิมพ์ <code>cmd</code> แล้วกด Enter เพื่อเปิด Command Prompt</p>
+                            <p>2. คัดลอกคาถาด้านล่างนี้และรันใน Command Prompt:</p>
+                            <div class="terminal-block">
+                                <span class="prompt">&gt;</span> <code id="cmd-win">python --version</code>
+                                <button class="copy-btn" data-target="cmd-win"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <p>3. หากแสดงผลเป็น <code>Python 3.x.x</code> แสดงว่าการตั้งโต๊ะสำเร็จ!</p>
+                        </div>
+                        
+                        <div class="tab-content hidden" id="os-macos-content">
+                            <p>1. กดปุ่ม <kbd>Cmd + Space</kbd> พิมพ์ <code>Terminal</code> แล้วเปิดขึ้นมา</p>
+                            <p>2. คัดลอกคาถาด้านล่างนี้และรันใน Terminal:</p>
+                            <div class="terminal-block">
+                                <span class="prompt">$</span> <code id="cmd-mac">python3 --version</code>
+                                <button class="copy-btn" data-target="cmd-mac"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <p>3. หากแสดงผลเป็น <code>Python 3.x.x</code> แสดงว่าการอัญเชิญห้องแล็บเรียบร้อย!</p>
+                        </div>
+                    </div>
+
+                    <div class="herta-says">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        <p><strong>HERTA Says:</strong> "ถ้าเจอบั๊กระหว่างติดตั้ง ลองพิมพ์หาในเน็ตดู... แต่ถ้า PATH ผิดก็แค่ลบลงใหม่ อย่าเพิ่งถอดใจล่ะ! เรื่องกล้วยๆ แค่นี้อย่าให้ฉันต้องมาช่วยเล้ย!"</p>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-1">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 1</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">การติดตั้ง Python บนระบบปฏิบัติการ Windows ข้อใดจำเป็นที่สุดเพื่อให้รันคำสั่ง python ผ่าน Command Prompt ได้ทันทีโดยไม่ติดขัด?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. ต้องติดตั้ง VS Code ก่อนดาวน์โหลด Python</button>
+                            <button class="option-btn" data-correct="true">ข. ติ๊กเลือก "Add Python to PATH" ระหว่างติดตั้ง</button>
+                            <button class="option-btn" data-correct="false">ค. ต้องปิดไฟร์วอลล์และแอนตี้ไวรัสของวินโดวส์ทั้งหมด</button>
+                            <button class="option-btn" data-correct="false">ง. ต้องเชื่อมต่ออินเทอร์เน็ตความเร็วสูงตลอดเวลาที่เขียนโค้ด</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-2">
+                            ไปต่อ: เวทมนตร์พื้นฐาน & ตัวแปร (บทที่ 2) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 2: เวทมนตร์พื้นฐาน & ตัวแปร -->
+            <section class="lesson-section" id="content-lesson-2">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 2</span>
+                    <h2>เวทมนตร์พื้นฐาน & ตัวแปร</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>ยินดีต้อนรับเข้าสู่การร่ายอักขระเวทมนตร์ของจริง! ในบทนี้เราจะมาเรียนรู้การสลักคำลงในหน่วยความจำและสร้าง "กล่องเก็บข้อมูล" ที่เปลี่ยนค่าได้</p>
+                    
+                    <h3>1. การสร้างกล่องข้อมูล (Variables) และเครื่องหมาย `=`</h3>
+                    <p>ในภาษา Python ตัวแปร (Variable) เปรียบเหมือนกล่องกระดาษเวทมนตร์ที่เราสลักชื่อไว้ และใช้เครื่องหมาย <code>=</code> ในการนำพลังงาน (ข้อมูล) ใส่เข้าไปในกล่องนั้น</p>
+                    <pre><code class="language-python"># สร้างกล่องชื่อ puppet_name และบันทึกคำว่า "Herta Puppet"
+puppet_name = "Herta Puppet"
+level = 83
+is_active = True</code></pre>
+
+                    <h3>2. ประเภทข้อมูลหลัก (Data Types)</h3>
+                    <p>ข้อมูลใน Python มีความจำเพาะที่แปรเปลี่ยนตามธรรมชาติการใช้งาน:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>ประเภทข้อมูล</th>
+                                    <th>ชื่อย่อ</th>
+                                    <th>ความหมาย / ตัวอย่าง</th>
+                                    <th>ตัวอย่างโค้ด</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ข้อความ</td>
+                                    <td><code>str</code> (String)</td>
+                                    <td>ต้องอยู่ในเครื่องหมายคำพูด (อัญประกาศ) <code>"..."</code></td>
+                                    <td><code>name = "Herta"</code></td>
+                                </tr>
+                                <tr>
+                                    <td>เลขจำนวนเต็ม</td>
+                                    <td><code>int</code> (Integer)</td>
+                                    <td>ตัวเลขไม่มีทศนิยม นำไปคำนวณได้ทันที</td>
+                                    <td><code>age = 16</code></td>
+                                </tr>
+                                <tr>
+                                    <td>เลขทศนิยม</td>
+                                    <td><code>float</code> (Floating Point)</td>
+                                    <td>ตัวเลขที่มีจุดทศนิยม มีความแม่นยำสูง</td>
+                                    <td><code>height = 145.5</code></td>
+                                </tr>
+                                <tr>
+                                    <td>ค่าทางตรรกะ</td>
+                                    <td><code>bool</code> (Boolean)</td>
+                                    <td>มีเพียง 2 สถานะเท่านั้น: <code>True</code> (จริง) หรือ <code>False</code> (เท็จ)</td>
+                                    <td><code>is_genius = True</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3. การแสดงผล (print) และการรับค่า (input)</h3>
+                    <ul>
+                        <li><code>print(...)</code>: คำสั่งสำหรับแสดงอักขระออกทางหน้าจอมอนิเตอร์</li>
+                        <li><code>input(...)</code>: คำสั่งรับข้อความที่ผู้ใช้กรอกผ่านคีย์บอร์ดเข้ามาประมวลผล (โดยค่าที่รับเข้ามาจะเป็น <code>str</code> เสมอ)</li>
+                    </ul>
+                    <pre><code class="language-python">name = input("จงระบุชื่อของคุณผู้ทดลอง: ")
+print("ยินดีต้อนรับ,", name, "สู่จักรวาลจำลอง!")</code></pre>
+
+                    <!-- Interactive Variable Inspector -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-box-open"></i> เครื่องจำลองการสร้างตัวแปรของ Herta</h4>
+                        <p class="description">ทดลองสร้างตัวแปรของคุณเอง ตรวจสอบความถูกต้องตามกฎเกณฑ์สมาคมอัจฉริยะ!</p>
+                        
+                        <div class="creator-form">
+                            <div class="form-group">
+                                <label for="var-name-input">ชื่อตัวแปร (Variable Name):</label>
+                                <input type="text" id="var-name-input" placeholder="ตัวอย่าง: puppet_count" value="puppet_count">
+                            </div>
+                            <div class="form-group">
+                                <label for="var-value-input">ค่าของข้อมูล (Value):</label>
+                                <input type="text" id="var-value-input" placeholder="ตัวอย่าง: 10" value="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="var-type-select">ประเภทข้อมูล (Data Type):</label>
+                                <select id="var-type-select">
+                                    <option value="int">Integer (int)</option>
+                                    <option value="str">String (str)</option>
+                                    <option value="float">Float (float)</option>
+                                    <option value="bool">Boolean (bool)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-accent" id="btn-inspect-var">ตรวจสอบโครงสร้างกล่อง</button>
+                        </div>
+                        
+                        <div id="inspector-output" class="inspector-output-box">
+                            <span class="placeholder-text">กรุณากดปุ่มเพื่อเริ่มต้นตรวจสอบ...</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-callout">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <h4>กฎเหล็กการตั้งชื่อตัวแปรสมาคมอัจฉริยะ #83</h4>
+                            <ul>
+                                <li>ห้ามขึ้นต้นด้วยตัวเลขเด็ดขาด (เช่น <code>1st_puppet</code> ใช้ไม่ได้!)</li>
+                                <li>ห้ามมีช่องว่างระหว่างคำ ให้ใช้เครื่องหมายขีดล่าง (Underscore <code>_</code>) เชื่อมคำ</li>
+                                <li>หลีกเลี่ยงการใช้ภาษาไทยและสัญลักษณ์พิเศษยกเว้น <code>_</code></li>
+                                <li>ห้ามใช้คำสงวนที่มีอยู่แล้วในภาษา Python (เช่น <code>print</code>, <code>if</code>, <code>import</code>)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-2">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 2</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">ข้อใดเป็นชื่อตัวแปรและการกำหนดค่าที่ถูกต้องตามกฎเหล็กและรูปแบบไวยากรณ์ภาษา Python?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. <code>83_puppet_count = 100</code></button>
+                            <button class="option-btn" data-correct="false">ข. <code>puppet count = "Active"</code></button>
+                            <button class="option-btn" data-correct="true">ค. <code>puppet_score = 145.5</code></button>
+                            <button class="option-btn" data-correct="false">ง. <code>print = True</code></button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-3">
+                            ไปต่อ: ตัวดำเนินการทางคณิตศาสตร์ (บทที่ 3) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 3: ตัวดำเนินการทางคณิตศาสตร์ -->
+            <section class="lesson-section" id="content-lesson-3">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 3</span>
+                    <h2>ตัวดำเนินการคำนวณและเปรียบเทียบ</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>การเคลื่อนย้ายสสารและการจำลองใน Simulated Universe ต้องใช้ความสามารถในการคำนวณที่รวดเร็ว ตัวดำเนินการ (Operators) คือกลไกเชื่อมโยงตัวเลขเข้าด้วยกัน</p>
+                    
+                    <h3>1. ตัวดำเนินการคำนวณ (Arithmetic Operators)</h3>
+                    <p>สัญลักษณ์คำนวณทางคณิตศาสตร์ใน Python ที่ช่วยให้เราสั่งคอมพิวเตอร์ประมวลผลเลขยากๆ ได้:</p>
+                    <ul>
+                        <li><code>+</code>, <code>-</code> : บวก และ ลบ</li>
+                        <li><code>*</code> : คูณ (ห้ามใช้ x เด็ดขาด!)</li>
+                        <li><code>/</code> : หาร (ผลลัพธ์เป็น float เสมอ)</li>
+                        <li><code>//</code> : หารเอาส่วน/หารปัดเศษลง (ปัดเศษทศนิยมทิ้ง)</li>
+                        <li><code>%</code> : หารเอาเศษ (Modulo - มีประโยชน์มากสำหรับการหาเลขคู่/คี่)</li>
+                        <li><code>**</code> : ยกกำลัง (เช่น <code>2**3</code> จะมีค่าเท่ากับ 8)</li>
+                    </ul>
+
+                    <h3>2. ตัวดำเนินการเปรียบเทียบ (Comparison Operators)</h3>
+                    <p>ใช้เพื่อเปรียบเทียบค่าสองฝั่ง และจะส่งค่าผลลัพธ์กลับมาเป็นตรรกะ <code>True</code> หรือ <code>False</code> เท่านั้น:</p>
+                    <ul>
+                        <li><code>==</code> : เท่ากับ (เปรียบเทียบ)</li>
+                        <li><code>!=</code> : ไม่เท่ากับ</li>
+                        <li><code>&gt;</code>, <code>&lt;</code> : มากกว่า, น้อยกว่า</li>
+                        <li><code>&gt;=</code>, <code>&lt;=</code> : มากกว่าหรือเท่ากับ, น้อยกว่าหรือเท่ากับ</li>
+                    </ul>
+
+                    <div class="warning-callout">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div>
+                            <h4>ข้อควรระวังอันตรายถึงชีวิตหุ่นเชิด!</h4>
+                            <p>จำไว้ให้ขึ้นใจ! เครื่องหมาย <code>=</code> ตัวเดียวหมายถึง <strong>"การกำหนดค่า"</strong> (Assign Value) ใส่กล่องตัวแปร ส่วนเครื่องหมาย <code>==</code> สองตัวหมายถึง <strong>"การเปรียบเทียบค่าว่าเท่ากันหรือไม่"</strong> (Comparison)</p>
+                            <pre><code class="language-python"># กำหนดค่า
+mana = 100 
+
+# เปรียบเทียบค่า (จะได้ผลลัพธ์เป็น True)
+is_full = (mana == 100)</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Operator Sandbox -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-calculator"></i> แท่นศิลาลองสูตรคำนวณพลังงาน</h4>
+                        <p class="description">กรอกตัวเลขและเลือกตัวดำเนินการ เพื่อจำลองการแสดงผลของคอมไพเลอร์ Python:</p>
+                        
+                        <div class="calculator-row">
+                            <input type="number" id="calc-val1" value="10" class="calc-input">
+                            <select id="calc-op" class="calc-select">
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                                <option value="*">*</option>
+                                <option value="/">/</option>
+                                <option value="//">//</option>
+                                <option value="%">%</option>
+                                <option value="**">**</option>
+                                <option value="==">==</option>
+                                <option value="!=">!=</option>
+                            </select>
+                            <input type="number" id="calc-val2" value="3" class="calc-input">
+                            <button class="btn btn-accent" id="btn-calc-execute">ประมวลผล</button>
+                        </div>
+                        
+                        <div class="calculator-result-box" id="calc-result">
+                            <span class="placeholder-text">ผลลัพธ์การร่ายคาถาจะสลักขึ้นที่นี่</span>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-3">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 3</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">หากประมวลผลคำสั่งเวทมนตร์ <code>result = 17 % 5</code> ในหน่วยความจำจำลอง ค่าของตัวแปร result จะเท่ากับเท่าใด?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. 3</button>
+                            <button class="option-btn" data-correct="false">ข. 3.4</button>
+                            <button class="option-btn" data-correct="true">ค. 2</button>
+                            <button class="option-btn" data-correct="false">ง. 1</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-4">
+                            ไปต่อ: ประตูทางเลือก (Conditionals) (บทที่ 4) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 4: ประตูแยกแห่ง Aeon (If-Elif-Else) -->
+            <section class="lesson-section" id="content-lesson-4">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 4</span>
+                    <h2>ประตูแยกแห่ง Aeon (If-Elif-Else)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>การตัดสินใจคือแก่นแท้ของปัญญา ประตูแยกแห่ง Aeon ควบคุมทิศทางไหลของกระแสพลังตามความสมบูรณ์และเงื่อนไขที่เราสลักไว้</p>
+                    
+                    <h3>1. โครงสร้างควบคุมการตัดสินใจ (Conditionals)</h3>
+                    <p>Python ใช้ชุดควบคุม <code>if</code> (ถ้า), <code>elif</code> (หรือถ้า - ย่อมาจาก else if), และ <code>else</code> (นอกเหนือจากนั้น) เพื่อให้โปรแกรมทำงานตามเงื่อนไขที่ต่างกัน</p>
+                    <pre><code class="language-python">score = 75
+
+if score >= 80:
+    print("คุณได้รับพรจาก Aeon Aha (Elation)")
+elif score >= 50:
+    print("คุณได้รับพรจาก Aeon Lan (Hunt)")
+else:
+    print("คุณถูกทำลายล้างโดย Aeon Nanook (Destruction)")</code></pre>
+
+                    <h3>2. กฎการย่อหน้า (Indentation) ในภาษา Python</h3>
+                    <p>แตกต่างจากภาษาอื่นที่ใช้ปีกกา <code>{}</code> ไวยากรณ์ Python จะใช้ <strong>"การย่อหน้า"</strong> (Indentation - แนะนำให้กดปุ่ม Tab 1 ครั้ง) ในการบ่งบอกขอบเขตว่าโค้ดบรรทัดใดอยู่ภายใต้เงื่อนไขนั้นๆ</p>
+
+                    <h3>3. ตัวเชื่อมตรรกะจำลอง (Logical Operators)</h3>
+                    <p>ในกรณีที่มีหลายเงื่อนไขรวมกัน เราสามารถใช้คำเหล่านี้เข้ามาเชื่อม:</p>
+                    <ul>
+                        <li><code>and</code>: เงื่อนไขต้องเป็นจริง <strong>ทั้งคู่</strong> จึงจะผ่าน (เช่น <code>mana > 50 and hp > 0</code>)</li>
+                        <li><code>or</code>: ขอแค่เงื่อนไขใดเงื่อนไขหนึ่งเป็นจริง <strong>อย่างน้อยหนึ่งข้อ</strong> ก็ผ่านได้</li>
+                        <li><code>not</code>: พลิกกลับค่าตรรกะ (True เป็น False, False เป็น True)</li>
+                    </ul>
+
+                    <!-- Interactive Decision Flowchart -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-diagram-project"></i> แผนผังการตัดสินใจจำลอง (Interactive Flowchart)</h4>
+                        <p class="description">ลากสไลเดอร์ปรับ "ระดับพลังปัญญา/แต้มบารมี" ของคุณเพื่อดูเส้นทางและคำอวยพรจาก Aeon!</p>
+                        
+                        <div class="flowchart-controller">
+                            <label for="virtue-score-slider">แต้มวิชาเวทมนตร์ (0 - 100): <strong id="virtue-score-display">75</strong></label>
+                            <input type="range" id="virtue-score-slider" min="0" max="100" value="75" class="custom-slider">
+                        </div>
+
+                        <div class="flowchart-visual">
+                            <div class="flow-node active" id="node-start">จุดเริ่มต้นผู้ทดสอบ</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-condition">คะแนนของท่านคือเท่าไหร่?</div>
+                            <div class="flow-branches">
+                                <div class="branch-path" id="path-gold">
+                                    <span class="path-cond">>= 80</span>
+                                    <div class="flow-node" id="node-gold">Aeon Aha (ทอง)</div>
+                                </div>
+                                <div class="branch-path" id="path-silver">
+                                    <span class="path-cond">50 ถึง 79</span>
+                                    <div class="flow-node" id="node-silver">Aeon Lan (เงิน)</div>
+                                </div>
+                                <div class="branch-path" id="path-bronze">
+                                    <span class="path-cond">&lt; 50</span>
+                                    <div class="flow-node" id="node-bronze">Aeon Nanook (ทองแดง)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flowchart-result" id="flowchart-output-card">
+                            <p><strong>ผู้มอบพร:</strong> <span id="blessing-aeon">Aeon Lan (Hunt)</span></p>
+                            <p id="blessing-description">"คุณมีความเร็วและเป้าหมายที่ชัดเจน ดุจลูกธนูสีเงินที่พุ่งตัดฟากฟ้าผ่านมิติต่างๆ"</p>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-4">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 4</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">ข้อใดอธิบายคุณสมบัติ "การย่อหน้า (Indentation)" ในเงื่อนไข Python ได้อย่างถูกต้องที่สุด?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. เขียนเพื่อความสวยงามเท่านั้น คอมไพเลอร์ข้ามการอ่านบรรทัดย่อหน้า</button>
+                            <button class="option-btn" data-correct="false">ข. ย่อหน้าโดยเคาะ Spacebar 1 ครั้งเสมอ ห้ามใช้ปุ่ม Tab</button>
+                            <button class="option-btn" data-correct="true">ค. ใช้ระบุขอบเขตช่วงตึกของคำสั่ง (Scope Block) แทนปีกกาในภาษาอื่นๆ</button>
+                            <button class="option-btn" data-correct="false">ง. ย่อหน้าทำได้เฉพาะหลังคำสั่ง else เท่านั้น สำหรับ if ไม่ต้องย่อหน้า</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-5">
+                            ไปต่อ: วงแหวนวนซ้ำ (Loops) (บทที่ 5) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 5: วงแหวนวนซ้ำ (Loops) -->
+            <section class="lesson-section" id="content-lesson-5">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 5</span>
+                    <h2>วงแหวนวนซ้ำ (For & While Loops)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>การวิจัยทางเวทมนตร์ต้องอาศัยการทดลองซ้ำนับพันๆ ครั้ง วงแหวนวนซ้ำ (Loops) ช่วยให้เราเขียนคำสั่งสั่งงานซ้ำๆ ได้อย่างง่ายดายด้วยสลักอักขระเพียงไม่กี่บรรทัด</p>
+                    
+                    <h3>1. วงแหวนมีรอบกำหนด: For Loop & range()</h3>
+                    <p><code>For Loop</code> เหมาะสำหรับการทำงานซ้ำที่มีจำนวนครั้งที่ระบุชัดเจน มักทำงานร่วมกับฟังก์ชัน <code>range(start, stop)</code> (รอบการทำจะหยุดก่อนถึงตัวเลข stop เสมอ)</p>
+                    <pre><code class="language-python"># วนรอบรดน้ำต้นไม้วิเศษ 5 รอบ (i จะมีค่าตั้งแต่ 1 ถึง 5)
+for i in range(1, 6):
+    print("รดน้ำวิเศษรอบที่", i)</code></pre>
+
+                    <h3>2. วงแหวนเงื่อนไขขอบเขต: While Loop</h3>
+                    <p><code>While Loop</code> จะวนซ้ำการทำคำสั่งไปเรื่อยๆ ตราบใดที่เงื่อนไขระบุหลังคำว่า while ยังคงประเมินเป็นจริง (True)</p>
+                    <div class="alert-box alert-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span><strong>คำเตือนภัยพิบัติ:</strong> อย่าลืมสร้างคำสั่งเพิ่มค่าตัวนับรอบการทำงาน (เช่น <code>count += 1</code>) ในตอนท้ายบล็อกวงลูป มิฉะนั้นโปรแกรมจะติดอยู่ใน **ลูปไม่สิ้นสุด (Infinite Loop)** ส่งผลให้ห้องแล็บระบบค้างและระเบิดได้!</span>
+                    </div>
+                    <pre><code class="language-python">count = 1
+while count <= 3:
+    print("ทดลองหุ่นเชิดร่างที่", count)
+    count += 1 # ตัวนับพลังงานเพื่อให้เงื่อนไขกลายเป็น False ในที่สุด</code></pre>
+
+                    <h3>3. สลักควบคุมพิเศษ: break & continue</h3>
+                    <ul>
+                        <li><code>break</code> : สลักหักกระแสลูปทันที (ออกจากวงโคจรลูปทันทีแม้จะยังทำรอบไม่ครบ)</li>
+                        <li><code>continue</code> : ข้ามโค้ดบรรทัดถัดไปในรอบปัจจุบัน แล้วกระโดดไปเริ่มวนซ้ำในรอบถัดไปทันที</li>
+                    </ul>
+
+                    <!-- Interactive Loop Visualizer -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-rotate"></i> เครื่องสาธิตการฉายพลังวนรอบ (Loop Animator)</h4>
+                        <p class="description">เลือกคำสั่งการทำงานวนซ้ำ จากนั้นกดปุ่ม "ก้าวถัดไป (Next Step)" เพื่อตรวจสอบสถานะตัวแปรและหน้าจอแสดงผลทีละก้าว:</p>
+                        
+                        <div class="loop-controller">
+                            <select id="loop-type-select" class="calc-select" style="width: 250px;">
+                                <option value="for">For i in range(1, 4)</option>
+                                <option value="while">While count <= 3</option>
+                            </select>
+                            <button class="btn btn-accent" id="btn-loop-start">เริ่มจำลองวงแหวน</button>
+                            <button class="btn btn-primary" id="btn-loop-next" disabled>ก้าวถัดไป (Next Step) <i class="fa-solid fa-forward-step"></i></button>
+                        </div>
+                        
+                        <div class="loop-visualizer-grid">
+                            <div class="visual-box">
+                                <h5>สถานะตัวแปรปัญญา</h5>
+                                <div id="loop-var-state" class="state-monitor">
+                                    <p>ยังไม่มีการรันวงลูป</p>
+                                </div>
+                            </div>
+                            <div class="visual-box">
+                                <h5>ภาพฉายแอนิเมชัน</h5>
+                                <div id="loop-graphic" class="graphic-screen">
+                                    <div class="idle-puppet"><i class="fa-solid fa-robot"></i> Wait...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-5">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 5</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">คำสั่งใดที่สามารถขัดขวางกระบวนการวนซ้ำใน Python และสั่งหยุดการทำงานของวงจรลูปทั้งหมดเพื่อออกมาด้านนอกในทันที?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. stop</button>
+                            <button class="option-btn" data-correct="true">ข. break</button>
+                            <button class="option-btn" data-correct="false">ค. continue</button>
+                            <button class="option-btn" data-correct="false">ง. exit_loop</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-6">
+                            ไปต่อ: กล่องเก็บของอาเรย์ (Lists) (บทที่ 6) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 6: กล่องสัมภาระเดินทาง (Lists) -->
+            <section class="lesson-section" id="content-lesson-6">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 6</span>
+                    <h2>กล่องสัมภาระเดินทาง (Lists)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>ในการสำรวจ Simulated Universe คุณจำเป็นต้องเก็บสะสมดวงตราพรอัญมณี อุปกรณ์สวมใส่จำนวนมาก กล่องเดี่ยวตัวแปรเดียวไม่พอใช้งาน เราต้องการกล่องเก็บของแบบเรียงแถวยาว!</p>
+                    
+                    <h3>1. โครงสร้างลิสต์จัดเก็บเรียงลำดับ</h3>
+                    <p>ตัวแปรประเภท <strong>List</strong> (หรืออาเรย์ในภาษาอื่น) ใช้จัดเก็บข้อมูลจำนวนหลายค่าในตัวแปรเดียวโดยกั้นด้วยเครื่องหมายจุลภาค <code>,</code> และล้อมรอบด้วยวงเล็บเหลี่ยม <code>[ ]</code></p>
+                    <pre><code class="language-python"># สร้างลิสต์เก็บคลังอาวุธวิเศษ
+backpack = ["Curio", "Cosmic Dice", "Space Coin"]</code></pre>
+
+                    <h3>2. การเข้าถึงด้วยดัชนี (Index)</h3>
+                    <ul>
+                        <li>ดัชนีตัวแรกสุดในแถวเริ่มจากหมายเลข <code>0</code> เสมอ (เช่น <code>backpack[0]</code> จะส่งผลเป็น <code>"Curio"</code>)</li>
+                        <li><strong>ดัชนีติดลบ (Negative Index):</strong> การเข้าถึงข้อมูลย้อนศรจากตำแหน่งด้านหลังสุด โดยเริ่มนับจากท้ายด้วยค่า <code>-1</code> (เช่น <code>backpack[-1]</code> จะได้ <code>"Space Coin"</code>)</li>
+                    </ul>
+
+                    <h3>3. การขยายและยืดกล่องคลังแสง</h3>
+                    <ul>
+                        <li><code>.append(item)</code> : คำสั่งเพิ่มสิ่งของลงไปต่อท้ายลิสต์</li>
+                        <li><code>len(list_name)</code> : ฟังก์ชันตรวจสอบจำนวนไอเทมทั้งหมดในกล่องเก็บของ</li>
+                    </ul>
+                    <pre><code class="language-python">backpack.append("Herta Doll")
+print(backpack) # ผลลัพธ์: ["Curio", "Cosmic Dice", "Space Coin", "Herta Doll"]
+print(len(backpack)) # ผลลัพธ์: 4</code></pre>
+
+                    <h3>4. ฟังก์ชันสไลซ์ข้อมูล (List Slicing)</h3>
+                    <p>ดึงเอาชิ้นส่วนของลิสต์ออกมาเป็นลิสต์ใหม่ด้วยโครงสร้าง <code>[start:stop]</code> (ดึงค่าตั้งแต่ตำแหน่งสตาร์ตแต่หยุดก่อนถึงค่าสต็อป)</p>
+                    <pre><code class="language-python">sub_bag = backpack[0:2] # จะดึงค่าดัชนีที่ 0 และ 1 ออกมาเท่านั้น</code></pre>
+
+                    <!-- Interactive List Suitcase -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-briefcase"></i> กล่องสัมภาระเวทมนตร์จำลอง (Interactive List)</h4>
+                        <p class="description">จำลองการใส่ไอเทมและการใช้ดัชนี (Index) ค้นหาข้อมูลในกระเป๋าเป้สะพายหลัง:</p>
+                        
+                        <div class="list-controller">
+                            <input type="text" id="list-input-item" placeholder="กรอกชื่อวิเศษวิญญาณ..." value="Luminflux" class="calc-input" style="width: 200px;">
+                            <button class="btn btn-accent" id="btn-list-add"><i class="fa-solid fa-plus"></i> เพิ่มไอเทม (.append)</button>
+                        </div>
+                        
+                        <div class="suitcase-visual" id="suitcase-container">
+                            <!-- Cubes will be inserted here dynamically -->
+                        </div>
+
+                        <div class="list-search-row">
+                            <label for="list-search-index">ป้อน Index ค้นหา (เช่น 0 หรือ -1):</label>
+                            <input type="number" id="list-search-index" value="0" class="calc-input" style="width: 70px;">
+                            <button class="btn btn-primary" id="btn-list-inspect">ตรวจสอบตำแหน่งดัชนี</button>
+                        </div>
+                        <p class="inspector-output-box" id="list-inspect-result" style="margin-top: 15px; text-align: center; font-weight: 500;">
+                            กดปุ่มตรวจสอบเพื่อสแกนช่องสัมภาระ
+                        </p>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-6">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 6</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">หากมีตัวแปรลิสต์ <code>curios = ["Star", "Mirror", "Box"]</code> คำสั่งรหัส <code>curios[-1]</code> จะคืนข้อมูลชิ้นใดให้ผู้เขียนโค้ด?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. "Star"</button>
+                            <button class="option-btn" data-correct="false">ข. "Mirror"</button>
+                            <button class="option-btn" data-correct="true">ค. "Box"</button>
+                            <button class="option-btn" data-correct="false">ง. เกิดข้อผิดพลาด Syntax Error</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-7">
+                            ไปต่อ: สารานุกรมวิจัย (Dictionaries) (บทที่ 7) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 7: สารานุกรมวิจัย (Dictionaries) -->
+            <section class="lesson-section" id="content-lesson-7">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 7</span>
+                    <h2>สารานุกรมวิจัย (Dictionaries)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>การระบุชื่อไอเทมหรือตัวแปรด้วยดัชนี 0, 1, 2 บางครั้งระบุยากและน่าเวียนหัว สมาคมอัจฉริยะจึงเลือกใช้สารานุกรมที่ผูกคำค้น (Key) เข้ากับความหมายและข้อมูล (Value) โดยตรง</p>
+                    
+                    <h3>1. โครงสร้างคีย์คู่ข้อมูล: {Key: Value}</h3>
+                    <p>ตัวแปรประเภท <strong>Dictionary</strong> (หรือ <code>dict</code>) สร้างขึ้นโดยใช้เครื่องหมายวงเล็บปีกกา <code>{ }</code> และจับคู่เชื่อมคีย์ด้วยเครื่องหมายโคลอน <code>:</code></p>
+                    <pre><code class="language-python"># บันทึกสารานุกรมวิจัยหุ่นเชิด
+puppet_info = {
+    "name": "Herta Puppet",
+    "material": "Oak & Crystal",
+    "power_source": "Aeon Spark"
+}
+
+# เรียกดูข้อมูลด้วยการอ้างอิงคีย์ (ได้ผลลัพธ์เป็น "Herta Puppet")
+print(puppet_info["name"])</code></pre>
+
+                    <h3>2. คำสั่งสารานุกรมพบบ่อย</h3>
+                    <ul>
+                        <li><code>.keys()</code> : คืนลิสต์ของชื่อคีย์ค้นหาทั้งหมดที่มีในสารานุกรม</li>
+                        <li><code>.values()</code> : คืนลิสต์ของมูลค่าข้อมูลภายในทั้งหมด</li>
+                        <li><code>.get(key, default)</code> : คำสั่งค้นหาค่าคีย์ หากไม่พบจะไม่ขัดข้องล่มระบบ แต่จะส่งค่าดีฟอลต์ (Default) ที่กำหนดไว้กลับมาแทน</li>
+                    </ul>
+
+                    <div class="herta-says">
+                        <i class="fa-solid fa-bell"></i>
+                        <p><strong>HERTA ALERT:</strong> "คีย์ในดิกชันนารีเปรียบเหมือนรหัสประจำตัววิจัย ห้ามซ้ำกันเด็ดขาด! หากแกเขียนโค้ดป้อนคีย์ที่ซ้ำกันลงไป ค่าเก่าจะโดนบันทึกทับลบล้างหายไปกับตาเลยนะ!"</p>
+                    </div>
+
+                    <!-- Interactive Dictionary Catalog -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-book"></i> คลังจำลองดิกชันนารีสมาคมอัจฉริยะ (Dictionary Catalog)</h4>
+                        <p class="description">ทดลองป้อนคีย์ค้นหา และกำหนดมูลค่าข้อมูล จากนั้นกดเซ็ตลงสารานุกรม สังเกตการทับซ้อนและโครงสร้างข้อมูลแบบ JSON:</p>
+                        
+                        <div class="dict-controller">
+                            <input type="text" id="dict-key" placeholder="ป้อน Key (เช่น type)..." class="calc-input" style="width: 160px;">
+                            <input type="text" id="dict-val" placeholder="ป้อน Value (เช่น Doll)..." class="calc-input" style="width: 160px;">
+                            <button class="btn btn-accent" id="btn-dict-set"><i class="fa-solid fa-key"></i> บันทึกคีย์ (Set Key)</button>
+                        </div>
+                        
+                        <div class="dict-visual-area">
+                            <div class="dict-table-side">
+                                <h5>ตารางจับคู่ Key-Value</h5>
+                                <table class="custom-table" id="dict-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Key</th>
+                                            <th>Value</th>
+                                            <th>การกระทำ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Will populate dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="dict-json-side">
+                                <h5>โครงสร้างไฟล์ในหน่วยความจำ <code>{}</code></h5>
+                                <pre><code class="language-json" id="dict-json-display">{
+  "name": "Herta"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-7">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 7</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">หากมีพจนานุกรม <code>my_dict = {"id": 83, "id": 99}</code> ผลลัพธ์สุดท้ายเมื่อดึงค่า <code>my_dict["id"]</code> จะเป็นเช่นไร?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. จะเกิดข้อผิดพลาดรุนแรงระบบค้าง (SyntaxError)</button>
+                            <button class="option-btn" data-correct="false">ข. ส่งค่ากลับเป็น 83 เพราะเป็นข้อมูลที่ป้อนเข้ามาเป็นลำดับแรก</button>
+                            <button class="option-btn" data-correct="true">ค. ส่งค่ากลับเป็น 99 เนื่องจากคีย์ซ้ำกัน คีย์หลังสุดจะบันทึกทับค่าเก่า</button>
+                            <button class="option-btn" data-correct="false">ง. ส่งค่ากลับมาเป็นลิสต์รวมคือ [83, 99]</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-8">
+                            ไปต่อ: มนตราเรียกใช้ซ้ำ (Functions) (บทที่ 8) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 8: จารึกคาถาเพื่อเรียกใช้ซ้ำ (Functions) -->
+            <section class="lesson-section" id="content-lesson-8">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 8</span>
+                    <h2>จารึกคาถาเพื่อเรียกใช้ซ้ำ (Functions)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>จอมเวทที่ดีต้องไม่เหนื่อยเขียนคาถาบทเดิมยาวๆ ซ้ำกันในทุกรอบ เราจะทำการสลักม้วนคัมภีร์เวทมนตร์ (Function) เอาไว้ แล้วดึงมาตะโกนเรียกชื่อเพื่อปลดปล่อยพลังงานได้บ่อยตามต้องการ</p>
+                    
+                    <h3>1. การประกาศและจารึกฟังก์ชันด้วยคีย์เวิร์ด `def`</h3>
+                    <p>เราใช้คำว่า <code>def</code> (ย่อจาก Define) เพื่อเป็นตัวบอกระบบว่านี่เป็นจุดเริ่มต้นรวบรวมมนตราสำหรับรันงาน</p>
+                    <pre><code class="language-python"># สร้างสูตรร้องเรียกชื่อผู้ช่วยจำลอง
+def greet_helper():
+    print("ระบบหุ่นเชิดกำลังตอบรับ...")
+    print("สวัสดีค่ะ ผู้ทดลองจักรวาลจำลอง!")</code></pre>
+
+                    <h3>2. การรับพารามิเตอร์ (Parameters) และการส่งค่าคืนกลับ (Return)</h3>
+                    <ul>
+                        <li><strong>Parameters (วัตถุดิบ):</strong> ตัวรับตัวแปรนำเข้าที่อยู่ในวงเล็บกลมหลังชื่อฟังก์ชันเพื่อเอามาคำนวณข้างใน</li>
+                        <li><strong>Return Value (ส่งคืนผลลัพธ์):</strong> คีย์เวิร์ด <code>return</code> ส่งค่าสรุปสุดท้ายหลุดออกไปหาจุดที่เรียกใช้</li>
+                    </ul>
+                    <pre><code class="language-python">def calculate_spell_power(mana, ratio):
+    total_power = mana * ratio
+    return total_power # ส่งกระแสพลังกลับคืน
+
+# เรียกใช้งานฟังก์ชันและนำผลมาบันทึก
+damage = calculate_spell_power(100, 1.5)
+print(damage) # ผลลัพธ์: 150.0</code></pre>
+
+                    <h3>3. ขอบเขตตัวแปร (Local Variable vs Global Variable)</h3>
+                    <ul>
+                        <li><strong>Local:</strong> ตัวแปรที่ประกาศขึ้น **ภายในฟังก์ชัน** จะถูกมองเห็นและใช้งานได้เฉพาะบริเวณที่อยู่ในฟังก์ชันนั้นเท่านั้น สลายไปเมื่อเสร็จสิ้นการทำงานฟังก์ชัน</li>
+                        <li><strong>Global:</strong> ตัวแปรที่ประกาศขึ้น **ภายนอกฟังก์ชัน** (ตัวโปรแกรมหลัก) สามารถถูกมองเห็นได้จากทุกจุด</li>
+                    </ul>
+
+                    <!-- Interactive Function Spell Machine -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-gears"></i> เครื่องกลร่ายเวทสมาคมอัจฉริยะ (Spell Caster Machine)</h4>
+                        <p class="description">ป้อนพารามิเตอร์วัตถุดิบ และสั่งให้เครื่องทำงาน เพื่อดูวิถีวิ่งของพารามิเตอร์ข้ามผ่านการประมวลผลฟังก์ชัน:</p>
+                        
+                        <div class="machine-form">
+                            <div class="form-group">
+                                <label for="spell-name">ชื่อเวทมนตร์ (String):</label>
+                                <input type="text" id="spell-name" value="Kurukuru Twister" class="calc-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="spell-mana">พลังงาน Mana ป้อนเข้า (Integer):</label>
+                                <input type="number" id="spell-mana" value="40" class="calc-input">
+                            </div>
+                            <button class="btn btn-accent" id="btn-machine-run"><i class="fa-solid fa-play"></i> สั่งผลิตมนตรา (Cast Function)</button>
+                        </div>
+                        
+                        <div class="machine-animation-box" id="machine-canvas">
+                            <div class="input-node" id="node-inputs">
+                                <strong>วัตถุดิบป้อนเข้า:</strong><br>
+                                name = "Kurukuru Twister"<br>
+                                mana = 40
+                            </div>
+                            <div class="flow-arrow-horizontal"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="function-box-node">
+                                <h5>def cast_spell(name, mana):</h5>
+                                <p>power = mana * 2.5</p>
+                                <p>return f"ร่าย {name} ดาเมจ: {power}"</p>
+                            </div>
+                            <div class="flow-arrow-horizontal"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="output-node" id="node-output-val">
+                                <strong>ค่า Return คืนกลับ:</strong><br>
+                                <span class="return-text">ยังไม่ได้รันคาถา</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-8">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 8</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">การสลักชื่อฟังก์ชันเพื่อบอกคอมไพเลอร์ให้รู้ว่านี่คือจุดจารึกคำสั่ง ในภาษา Python ต้องเริ่มด้วยคำศัพท์สงวนข้อใด?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. function</button>
+                            <button class="option-btn" data-correct="false">ข. create</button>
+                            <button class="option-btn" data-correct="true">ค. def</button>
+                            <button class="option-btn" data-correct="false">ง. spell</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-9">
+                            ไปต่อ: พิมพ์เขียวหุ่นเชิด (OOP Basics) (บทที่ 9) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 9 (ขั้นกลาง): แบบแปลนสร้างหุ่นเชิด (OOP Basics) -->
+            <section class="lesson-section" id="content-lesson-9">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 9</span>
+                    <h2>พิมพ์เขียวหุ่นเชิด (OOP Basics)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>ขอบเขตวิชาขั้นกลางเริ่มต้นขึ้นแล้ว! หุ่นเชิดนับร้อยของ Herta ไม่ได้ขึ้นรูปจากศูนย์ในทุกชิ้น แต่พวกมันหล่อหลอมมาจากโครงร่างพิมพ์เขียวกลางชนิดเดียวกันที่กำหนดมาตรฐานเอาไว้</p>
+                    
+                    <h3>1. แนวคิด Object-Oriented Programming (OOP)</h3>
+                    <p>OOP คือแนวทางการเขียนโปรแกรมที่จำลองเอาองค์ประกอบในชีวิตจริงหรือห้องทดลองมาอยู่ในรูปแบบของวัตถุที่มีคุณลักษณะและการทำงานในตัวเอง</p>
+                    <ul>
+                        <li><strong>Class (พิมพ์เขียว):</strong> เสมือนแบบวาดพิมพ์เขียวโครงกระดูกเหล็กในกระดาษวิศวกรรม</li>
+                        <li><strong>Object (หุ่นเชิดของจริง):</strong> ตัวหุ่นเชิดที่ประกอบขึ้นมาสำเร็จรูปตามขนาดและแบบแปลนนั้นและมีตัวตนจริงในคอมพิวเตอร์</li>
+                    </ul>
+
+                    <h3>2. การใช้เมธอดสร้างเริ่มต้น __init__ และคีย์เวิร์ด `self`</h3>
+                    <ul>
+                        <li><code>__init__</code> : คอนสตรัคเตอร์ (Constructor) เมธอดที่จะทำงานทันทีที่ตัววัตถุ (Object) ถูกสร้างขึ้น มีหน้าที่ตั้งค่าสถิติเริ่มต้นของชิ้นงาน</li>
+                        <li><code>self</code> : ตัวแทนที่อ้างอิงถึงตัวแปรวัตถุชิ้นนั้นๆ เอง ช่วยให้แต่ละหุ่นเก็บค่าระดับพลังและชื่อแยกของตนเองได้อย่างอิสระ</li>
+                    </ul>
+                    <pre><code class="language-python">class Puppet:
+    def __init__(self, name, score):
+        self.name = name       # คุณสมบัติ (Attribute)
+        self.score = score     # คุณสมบัติ
+        
+    def kurukuru(self):        # ความสามารถ (Method)
+        return f"{self.name} กำลังหมุนตัว คุรุคุรุ~! ทักษะปัญญา: {self.score}"
+
+# นำพิมพ์เขียวมาปั้นตัวหุ่นเชิดจริง (Objects)
+puppet_a = Puppet("หุ่นไม้เบอร์ 1", 85)
+puppet_b = Puppet("หุ่นแก้วเบอร์ 2", 99)
+
+print(puppet_a.kurukuru()) # หุ่นไม้เบอร์ 1 กำลังหมุนตัว คุรุคุรุ~! ทักษะปัญญา: 85</code></pre>
+
+                    <!-- Interactive Puppet Builder -->
+                    <div class="interactive-component" style="background-image: url('assets/herta_puppet.jpg'); background-size: cover; background-position: center; position: relative;">
+                        <div class="visual-overlay" style="background: rgba(253, 251, 247, 0.95); padding: 20px; border-radius: 12px;">
+                            <h4><i class="fa-solid fa-robot"></i> โครงงานควบคุมการผลิตหุ่นเชิดอัตโนมัติ (Puppet Assembly Line)</h4>
+                            <p class="description">ทดลองกรอกชื่อ สีชุด และกดประกอบวัตถุขึ้นมาเป็นตัวตนจริงตามแบบแปลนคลาส:</p>
+                            
+                            <div class="machine-form">
+                                <div class="form-group">
+                                    <label for="puppet-name-input">ป้อนชื่อหุ่น (Name):</label>
+                                    <input type="text" id="puppet-name-input" value="KuruDoll-01" class="calc-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="puppet-color-select">เลือกโทนสีชุด (Outfit Color):</label>
+                                    <select id="puppet-color-select" class="calc-select">
+                                        <option value="purple">ม่วงลาเวนเดอร์ (#8E7AB5)</option>
+                                        <option value="pink">ชมพูสมาคม (#E198B7)</option>
+                                        <option value="blue">ฟ้านีออนเวทย์ (#D4ADFC)</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-accent" id="btn-build-puppet"><i class="fa-solid fa-hammer"></i> ประกอบตัวตนหุ่น (.instantiate)</button>
+                            </div>
+                            
+                            <div class="puppet-spawn-yard" id="puppet-yard">
+                                <!-- Spawned puppets will appear here -->
+                                <div class="no-puppets-notice">ยังไม่มีการสร้างหุ่นเชิดขึ้นที่ลานทดลอง</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-9">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 9</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">ในภาษา Python พารามิเตอร์ตัวแรกที่ต้องระบุในเมธอดเริ่มต้นของ Class เสมอเพื่อใช้อ้างอิงถึงตัววัตถุคือข้อใด?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. this</button>
+                            <button class="option-btn" data-correct="false">ข. object</button>
+                            <button class="option-btn" data-correct="true">ค. self</button>
+                            <button class="option-btn" data-correct="false">ง. parent</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-10">
+                            ไปต่อ: การสืบทอดพิมพ์เขียว (OOP Class) (บทที่ 10) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 10 (ขั้นกลาง): การสืบทอดพิมพ์เขียว (OOP Class) -->
+            <section class="lesson-section" id="content-lesson-10">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 10</span>
+                    <h2>การสืบทอดพิมพ์เขียว (OOP Class)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>การวิจัยที่ดีต้องต่อยอดได้ การสืบทอด (Inheritance) ช่วยให้เราสร้างพิมพ์เขียวลูกแบบใหม่ที่มีความสามารถพิเศษเพิ่มขึ้นโดยดึงคุณสมบัติพื้นฐานเดิมของคลาสแม่มาทั้งหมด!</p>
+                    
+                    <h3>1. การสืบทอดความสามารถของคลาสลูก (Inheritance)</h3>
+                    <p>เราส่งค่าชื่อคลาสแม่เข้าไปในวงเล็บหลังการประกาศคลาสลูก เพื่อบอกความสัมพันธ์การสืบทอด</p>
+                    <pre><code class="language-python"># คลาสแม่ดั้งเดิม
+class BasePuppet:
+    def __init__(self, name):
+        self.name = name
+    def stand_by(self):
+        return f"{self.name} ประจำสถานีทดสอบ"
+
+# คลาสลูกที่เพิ่มเติมความสามารถสู้รบ
+class CombatPuppet(BasePuppet):
+    def fire_laser(self):
+        return f"{self.name} ยิงลำแสงสีม่วงพาสเทลอัดศัตรู!"</code></pre>
+
+                    <h3>2. การใช้ฟังก์ชัน `super().__init__()`</h3>
+                    <p>ในการประกอบโครงร่างคลาสลูก บางครั้งเรายังต้องรันกระบวนการจัดตั้งเบื้องต้นของคลาสแม่เสียก่อน วิธีการคือเรียกใช้ฟังก์ชัน <code>super()</code> เพื่อส่งพลังไปยังคอนสตรัคเตอร์คลาสหลัก</p>
+                    <pre><code class="language-python">class CombatPuppet(BasePuppet):
+    def __init__(self, name, laser_power):
+        super().__init__(name) # อัญเชิญสร้างจากคลาสแม่
+        self.laser_power = laser_power # สถิติตัวเสริมของคลาสลูกเอง</code></pre>
+
+                    <!-- Interactive Inheritance visualizer -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-sitemap"></i> ทัศนภาพการเชื่อมสายใยตระกูลหุ่น (Inheritance Tree Visualizer)</h4>
+                        <p class="description">เปรียบเทียบระหว่างแบบธรรมดาและแบบสู้รบที่ได้รับการสืบทอดความสามารถ:</p>
+                        
+                        <div class="inheritance-visualizer">
+                            <div class="class-node parent-node">
+                                <h5>Class: BasePuppet (คลาสแม่)</h5>
+                                <p>คุณลักษณะ: <code>name</code></p>
+                                <p>ความสามารถ: <code>stand_by()</code></p>
+                            </div>
+                            <div class="connecting-line"><i class="fa-solid fa-circle-chevron-down"></i> ได้รับสืบทอด</div>
+                            <div class="class-node child-node">
+                                <h5>Class: CombatPuppet (คลาสลูก)</h5>
+                                <p>คุณลักษณะ: <code>name</code>, <code>laser_power</code> <span class="added-badge">เพิ่ม</span></p>
+                                <p>ความสามารถ: <code>stand_by()</code>, <code>fire_laser()</code> <span class="added-badge">เพิ่ม</span></p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 15px;">
+                            <button class="btn btn-accent" id="btn-demo-inheritance">จำลองสัญญาณการยิงแสงเลเซอร์ลูก</button>
+                        </div>
+                        <p id="inheritance-demo-output" class="inspector-output-box" style="margin-top: 10px; text-align: center;">
+                            รอรับคำสั่งตรวจสอบพลังสืบทอด...
+                        </p>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-10">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 10</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">คำสั่งใดที่ใช้งานในคอนสตรัคเตอร์ของคลาสลูก เพื่อดึงคุณสมบัติการจัดทำเริ่มแรกในคลาสแม่มาตั้งระบบโดยอัตโนมัติ?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. <code>parent.start()</code></button>
+                            <button class="option-btn" data-correct="true">ข. <code>super().__init__()</code></button>
+                            <button class="option-btn" data-correct="false">ค. <code>mother.clone(self)</code></button>
+                            <button class="option-btn" data-correct="false">ง. <code>class.extend()</code></button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-11">
+                            ไปต่อ: ดักจับสิ่งปนเปื้อน (Exceptions) (บทที่ 11) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 11: ดักจับสิ่งปนเปื้อน (Exceptions) -->
+            <section class="lesson-section" id="content-lesson-11">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 11</span>
+                    <h2>ดักจับสิ่งปนเปื้อน (Exceptions)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>ไม่มีสิ่งประดิษฐ์ใดไร้ตำหนิ ในสภาวะแวดล้อมจริง ข้อผิดพลาด (Exceptions) เช่น การพิมพ์ตัวอักษรแทนตัวเลข การหารด้วยศูนย์ ย่อมเกิดขึ้นได้และอาจทำให้ระบบจักรวาลจำลองล่มลง!</p>
+                    
+                    <h3>1. โครงสร้างป้องภัยสะกดพัง: Try-Except</h3>
+                    <p>เราห่อหุ้มคำสั่งที่มีความเสี่ยงว่าจะแตกพังไว้ในตึกคำสั่ง <code>try</code> และระบุคำแนะนำสำรองไว้ในตึก <code>except</code> หากพังจริงระบบจะไม่เด้งค้าง แต่จะเลี่ยงไฟมาทำบล็อกสำรองทันที</p>
+                    <pre><code class="language-python">try:
+    number = int(input("ป้อนตัวเลขปัญญา: "))
+    result = 100 / number
+    print("ผลลัพธ์คำนวณ:", result)
+except ZeroDivisionError:
+    print("ไม่สามารถเอาเลข 0 มาหารระบบพลังได้!")
+except ValueError:
+    print("ขออภัย! คาถาต้องการเลขจำนวนจริง ไม่รับตัวอักษร")</code></pre>
+
+                    <h3>2. คันดักอัปเกรด: Else & Finally</h3>
+                    <ul>
+                        <li><code>else</code> : ทำงานเฉพาะกรณีที่คำสั่งในบล็อก try รันได้อย่างราบรื่นและไม่มีสิ่งแปลกปลอมพังเลย</li>
+                        <li><code>finally</code> : บล็อกรับประกันภัยที่จะ **รันเสมอแน่นอนร้อยเปอร์เซ็นต์** ไม่ว่าโค้ดจะรันผ่านฉลุยหรือเกิดการแตกพังบานปลายในจุดทดลองก็ตาม มักใช้เปิดปิดระบบควบคุมทรัพยากร</li>
+                    </ul>
+
+                    <!-- Interactive Shield Simulator -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-shield"></i> เครื่องจำลองเกราะป้องกันโปรแกรมล่ม (Shield Simulator)</h4>
+                        <p class="description">ทดลองป้อนตัวเลข "ตัวหาร (Divisor)" และเลือกเปิด/ปิดเกราะสะกด Try-Except สังเกตปฏิกิริยาของระบบ:</p>
+                        
+                        <div class="shield-controls">
+                            <label for="shield-divisor">ตัวเลขหาร (หาร 100 ด้วย):</label>
+                            <input type="number" id="shield-divisor" value="0" class="calc-input" style="width: 80px;">
+                            
+                            <div class="toggle-container">
+                                <span class="toggle-label">เกราะ Try-Except:</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="shield-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="btn btn-accent" id="btn-test-shield">ยิงพลังงานหาร</button>
+                        </div>
+                        
+                        <div class="shield-visual-output" id="shield-terminal">
+                            <p class="sys-msg">[System] พร้อมตรวจหาจุดปนเปื้อน...</p>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-11">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 11</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">บล็อกย่อยตัวสุดท้ายข้อใดในโครงสร้าง Try-Except ที่ระบบประกันว่าจะทำงานประมวลผลอย่างแน่นอนร้อยเปอร์เซ็นต์ ไม่ว่าโปรแกรมจะผ่านหรือพังก็ตาม?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. else</button>
+                            <button class="option-btn" data-correct="false">ข. try</button>
+                            <button class="option-btn" data-correct="true">ค. finally</button>
+                            <button class="option-btn" data-correct="false">ง. catch</button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="lesson-12">
+                            ไปต่อ: การเปิดขอบเขตโลกภายนอก (บทที่ 12) <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทที่ 12: การเปิดขอบเขตโลกภายนอก -->
+            <section class="lesson-section" id="content-lesson-12">
+                <div class="lesson-header">
+                    <span class="chapter-number">บทที่ 12</span>
+                    <h2>การเปิดขอบเขตโลกภายนอก (Files & Modules)</h2>
+                </div>
+
+                <div class="content-body">
+                    <p>บทเรียนสุดท้ายของโปรโตคอลการจำลอง! หุ่นเชิดอัจฉริยะต้องไม่ถูกจองจำอยู่เพียงในหน่วยความจำชั่วคราว เราต้องสามารถจดข้อมูลลงม้วนบันทึกถาวร และอัญเชิญโมดูลภายนอกมาใช้ได้</p>
+                    
+                    <h3>1. การเขียนและอ่านม้วนเอกสารไฟล์: with open()</h3>
+                    <p>เราเปิดและปิดประตูไฟล์โดยอัตโนมัติด้วยโครงสร้าง <code>with open()</code> เพื่อรับประกันว่าไฟล์จะถูกเก็บกวาดเข้าคลังหลังใช้งานเสร็จสิ้น</p>
+                    <pre><code class="language-python"># เขียนสารอักขระลงสมุดบันทึกวิเศษ
+with open("lab_log.txt", "w", encoding="utf-8") as file:
+    file.write("การทดสอบหุ่นเชิดอัจฉริยะ บทที่ 12: สำเร็จราบรื่น!")
+
+# เปิดอ่านอภิมหาคลังบันทึกที่บันทึกไว้
+with open("lab_log.txt", "r", encoding="utf-8") as file:
+    content = file.read()
+    print("คลังบันทึกจดบันทึกไว้ว่า:", content)</code></pre>
+
+                    <h3>2. การนำเข้าโมดูลภายนอกที่เป็น Standard Libraries</h3>
+                    <p>ดึงเอาวิทยาศาตร์ระดับโลกที่มีอยู่แล้วมาประกบสเกลใช้งานผ่านคำสั่ง <code>import</code>:</p>
+                    <ul>
+                        <li><code>import random</code> : เปิดการสุ่มคาถา สุ่มไอเทม</li>
+                        <li><code>import time</code> : ใช้หยุดเวลาเพื่อพักร่างหุ่นเชิด (เช่น <code>time.sleep(1)</code>)</li>
+                    </ul>
+
+                    <h3>3. การติดตั้งคลังแสงผ่าน Terminal ด้วยเครื่องมือ pip</h3>
+                    <p>ในโลกเวทมนตร์ Python มีสมาคมมักเขียนคาถาสำเร็จรูปแจกจ่ายให้เราใช้งานได้ฟรี เราเปิดแอป Terminal ในเครื่องแล้วสลักคาถาสั่งดาวน์โหลดได้เลย:</p>
+                    <div class="terminal-block">
+                        <span class="prompt">&gt;</span> <code>pip install requests numpy pandas</code>
+                    </div>
+                    <p>ตัวอย่าง: <code>requests</code> ช่วยเรายิงจดหมาย API เชื่อมต่อกับเว็บภายนอกทั่วทั้งดาวเคราะห์โลก!</p>
+
+                    <!-- Interactive File Cabinet Explorer -->
+                    <div class="interactive-component">
+                        <h4><i class="fa-solid fa-file-lines"></i> กล่องตู้เอกสารเขียนไฟล์จำลอง (Virtual File System)</h4>
+                        <p class="description">ทดลองพิมพ์ข้อมูลบันทึกลงไปในไฟล์จำลอง และกดสั่งเขียนไฟล์ สังเกตสถานการณ์เปิดปิดของสมุดหน้าบันทึก:</p>
+                        
+                        <div class="file-workspace">
+                            <div class="file-writer-panel">
+                                <label for="virtual-file-input">ข้อความบันทึก (lab_log.txt):</label>
+                                <textarea id="virtual-file-input" class="custom-textarea" rows="3">บันทึกสภาวะห้องทำงาน Herta วันนี้: ความฉลาดเพิ่มขึ้น 500%</textarea>
+                                <button class="btn btn-accent" id="btn-virtual-file-write"><i class="fa-solid fa-pen-nib"></i> รัน with open("lab_log.txt", "w")</button>
+                            </div>
+                            <div class="file-closet-panel">
+                                <h5>ตู้ลิ้นชักเอกสารจำลอง</h5>
+                                <div class="file-item-doc" id="virtual-file-document">
+                                    <div class="doc-icon"><i class="fa-regular fa-file-lines"></i></div>
+                                    <div class="doc-meta">
+                                        <strong class="doc-title">lab_log.txt</strong>
+                                        <p class="doc-preview" id="virtual-file-preview">ไฟล์เปล่า...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Block -->
+                    <div class="quiz-card" id="quiz-12">
+                        <div class="quiz-header">
+                            <span class="quiz-badge">แบบทดสอบท้ายบทที่ 12</span>
+                            <h4>คำถามวัดพลังปัญญาจำลอง</h4>
+                        </div>
+                        <p class="quiz-question">การใช้งานบล็อกคำสั่งใดใน Python ที่ช่วยดูแลการจัดการเปิดไฟล์และบังคับสั่งปิดให้อัตโนมัติเมื่อหลุดจากขอบเขต ป้องกันทรัพยากรรั่วไหล?</p>
+                        <div class="quiz-options">
+                            <button class="option-btn" data-correct="false">ก. <code>file = open()</code></button>
+                            <button class="option-btn" data-correct="true">ข. <code>with open() as file:</code></button>
+                            <button class="option-btn" data-correct="false">ค. <code>try open() catch()</code></button>
+                            <button class="option-btn" data-correct="false">ง. <code>import file_manager</code></button>
+                        </div>
+                        <div class="quiz-feedback hidden"></div>
+                    </div>
+
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="conclusion">
+                            ไปสู่: พิธีสำเร็จความสำเร็จจำลอง (Graduation) <i class="fa-solid fa-trophy"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ห้องทดลองเขียนโค้ด (Playground) -->
+            <section class="lesson-section" id="content-playground">
+                <div class="lesson-header">
+                    <span class="chapter-number">PLAYGROUND</span>
+                    <h2>โต๊ะทดลองร่ายมนตร์ Python (Python Playground)</h2>
+                </div>
+                
+                <div class="content-body">
+                    <p>ยินดีต้อนรับสู่โต๊ะทำงานร่ายมนตร์หลักของห้องแล็บ Herta! ที่นี่คุณสามารถเขียนโค้ด Python ได้อย่างอิสระ รันและทดสอบการแสดงผลลัพธ์ผ่านช่องประมวลผล (Console Output) ได้แบบเรียลไทม์ โดยมีระบบคอมไพเลอร์ Pyodide คอยขับเคลื่อนอยู่เบื้องหลัง!</p>
+                    
+                    <!-- Playground Core Layout -->
+                    <div class="playground-layout">
+                        <!-- Editor Panel -->
+                        <div class="playground-panel editor-panel">
+                            <div class="panel-header">
+                                <span><i class="fa-solid fa-pen-nib"></i> พื้นที่เขียนโค้ด (main.py)</span>
+                                <span id="playground-compiler-status" class="compiler-status-indicator loading">กำลังตระเตรียมตัวแปลภาษา...</span>
+                            </div>
+                            
+                            <!-- Template Selector Toolbar -->
+                            <div class="playground-toolbar">
+                                <div class="toolbar-group">
+                                    <label for="playground-template-select">โหลดตัวอย่างพลังเวทย์: </label>
+                                    <select id="playground-template-select" class="calc-select">
+                                        <option value="default">-- คาถาว่างเปล่า --</option>
+                                        <option value="lesson-2">บทที่ 2: ตัวแปรเวทมนตร์</option>
+                                        <option value="lesson-3">บทที่ 3: คำนวณคณิตศาสตร์</option>
+                                        <option value="lesson-4">บทที่ 4: เงื่อนไข If-Else</option>
+                                        <option value="lesson-5">บทที่ 5: ลูปวนซ้ำ</option>
+                                        <option value="lesson-6">บทที่ 6: กล่องลิสต์</option>
+                                        <option value="lesson-7">บทที่ 7: พจนานุกรม Dict</option>
+                                        <option value="lesson-8">บทที่ 8: ฟังก์ชัน</option>
+                                        <option value="lesson-9">บทที่ 9: แบบแปลน Class</option>
+                                        <option value="lesson-10">บทที่ 10: การสืบทอด OOP</option>
+                                        <option value="lesson-11">บทที่ 11: ดักจับข้อยกเว้น</option>
+                                        <option value="lesson-12">บทที่ 12: การอ่านเขียนไฟล์</option>
+                                    </select>
+                                </div>
+                                <div class="toolbar-group">
+                                    <button class="btn-icon" id="btn-playground-reset" title="รีเซ็ตโค้ด"><i class="fa-solid fa-rotate-right"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="playground-editor-wrapper">
+                                <div class="line-numbers" id="playground-line-numbers">
+                                    <span>1</span>
+                                </div>
+                                <textarea id="playground-code-editor" class="playground-textarea" spellcheck="false" placeholder="ร่ายมนตรา Python ของท่านที่นี่..."></textarea>
+                            </div>
+                            
+                            <div class="playground-actions">
+                                <button class="btn btn-primary" id="btn-playground-run" disabled>
+                                    <i class="fa-solid fa-play"></i> รันเวทมนตร์ (Run Python)
+                                </button>
+                                <button class="btn btn-accent" id="btn-playground-clear">
+                                    <i class="fa-solid fa-trash-can"></i> ล้างคอนโซล (Clear Output)
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Console Output Panel -->
+                        <div class="playground-panel console-panel">
+                            <div class="panel-header">
+                                <span><i class="fa-solid fa-terminal"></i> เอาต์พุตผลการประมวลผล (Console Output)</span>
+                            </div>
+                            <div class="playground-console-wrapper">
+                                <pre id="playground-output">กำลังโหลดระบบวิญญาณ Pyodide ... โปรดรอสักครู่</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Herta Tip in Playground -->
+                    <div class="tips-box" style="margin-top: 30px;">
+                        <div class="tips-icon"><i class="fa-solid fa-circle-question"></i></div>
+                        <div class="tips-content">
+                            <h4>คำแนะนำเพิ่มเติมจากห้องทดลอง</h4>
+                            <p>คุณสามารถเขียนคำสั่ง <code>print()</code> หลาย ๆ บรรทัด หรือท้าทายตนเองโดยการรวมบทเรียนต่าง ๆ เช่น ประกาศ Class ควบคู่ไปกับเขียนบล็อก Try-Except แล้วดูผลลัพธ์การทำงานได้ทันที!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-container">
+                        <button class="btn btn-primary next-chapter-btn" data-next="conclusion">
+                            ไปสู่: พิธีสำเร็จความสำเร็จจำลอง (Graduation) <i class="fa-solid fa-trophy"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- บทสรุปการทดสอบ: ความสำเร็จขั้นแรก -->
+            <section class="lesson-section" id="content-conclusion">
+                <div class="lesson-header text-center">
+                    <span class="chapter-number">CONGRATULATIONS</span>
+                    <h2>ความสำเร็จขั้นแรกของสมาคมอัจฉริยะ</h2>
+                    <p class="subtitle">(Genius Society #83 Assistant Graduation)</p>
+                </div>
+
+                <div class="content-body">
+                    <div class="graduation-banner text-center">
+                        <i class="fa-solid fa-graduation-cap graduation-icon"></i>
+                        <h3>ยินดีด้วยผู้ท่องมิติจำลอง!</h3>
+                        <p>คุณได้ทำการทดสอบ ปัดป้อง บันทึกตัวแปร และเขียนไวยากรณ์ Python ขั้นพื้นฐานครบทั้ง 12 บทเรียนเวทมนตร์เรียบร้อยแล้ว!</p>
+                    </div>
+
+                    <!-- Graduation Certificate Component -->
+                    <div class="certificate-container hidden" id="certificate-widget">
+                        <div class="certificate-box">
+                            <div class="cert-border"></div>
+                            <div class="cert-body">
+                                <span class="cert-org">GENIUS SOCIETY #83</span>
+                                <h2>ใบประกาศนียบัตรอัจฉริยะจำลอง</h2>
+                                <p class="cert-subtitle">มอบให้เพื่อแสดงว่า</p>
+                                <h3 class="cert-recipient" id="cert-name-display">ผู้เรียนผู้ทรงปัญญา</h3>
+                                <p class="cert-text">ได้ผ่านโปรโตคอล Simulated Universe และบรรลุแก่นเวทมนตร์ Python ระดับหุ่นเชิดก้าวหน้าอย่างเต็มภาคภูมิ</p>
+                                <div class="cert-signatures">
+                                    <div class="signature">
+                                        <span class="sig-line">Herta</span>
+                                        <span class="sig-title">หัวหน้าห้องปฏิบัติการอัจฉริยะ</span>
+                                    </div>
+                                    <div class="signature">
+                                        <span class="sig-line">Simulated Universe</span>
+                                        <span class="sig-title">ระบบคอมพิวเตอร์จักรวาลหลัก</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center" style="margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> พิมพ์เกียรติบัตรของคุณ</button>
+                        </div>
+                    </div>
+
+                    <div class="certificate-lock-notice text-center" id="certificate-locked-message">
+                        <p><i class="fa-solid fa-lock"></i> <strong>ใบรับรองปัญญาถูกล็อกอยู่:</strong> กรุณาตอบแบบทดสอบท้ายบทเรียนให้ครบถ้วน 100% (ผ่านครบทั้ง 12 บทเรียน) เพื่อปลดล็อกใบประกาศนียบัตรรับรองจาก Herta</p>
+                    </div>
+
+                    <div class="form-group text-center" id="cert-name-input-group" style="max-width: 400px; margin: 20px auto; display: none;">
+                        <label for="student-cert-name">กรอกชื่อสะกดบนใบเกียรติบัตร:</label>
+                        <input type="text" id="student-cert-name" value="หุ่นเชิดฝึกหัดสมาคม" class="calc-input text-center">
+                    </div>
+
+                    <!-- Ending Quote Box -->
+                    <div class="herta-callout pink-accent" style="margin-top: 30px;">
+                        <div class="herta-avatar-frame">
+                            <img src="assets/herta_chibi.jpg" alt="Herta" class="herta-avatar-img">
+                        </div>
+                        <div class="herta-speech-bubble">
+                            <h3 class="herta-name">Herta Ending Quote</h3>
+                            <p class="herta-quote">"คุรุคุรุ~! ดีมากที่พยายามเรียนมาจนจบหน้าสุดท้าย! แต่อย่าเพิ่งผยองไปล่ะ โลกของภาษามันกว้างใหญ่กว่านี้มาก และ Simulated Universe นี้ยังคงรอการทดลองบทต่อ ๆ ไปจากเธออยู่นะ!"</p>
+                        </div>
+                    </div>
+
+                    <div class="cta-container text-center">
+                        <button class="btn btn-accent btn-large" onclick="location.hash='#top-header'; location.reload();">
+                            <i class="fa-solid fa-rotate-left"></i> ทดลองใหม่อีกครั้ง
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Collapsible Right Side Python Sandbox (โต๊ะเขียนมนตรา) -->
+    <div class="sandbox-drawer" id="sandbox-desk">
+        <button class="sandbox-toggle-btn" id="btn-sandbox-toggle" aria-label="เปิดปิด โต๊ะเขียนมนตรา">
+            <span class="toggle-text"><i class="fa-solid fa-terminal"></i> โต๊ะเขียนมนตรา</span>
+        </button>
+        
+        <div class="sandbox-content">
+            <div class="sandbox-header">
+                <h3><i class="fa-brands fa-python"></i> โต๊ะเขียนมนตรา Python Sandbox</h3>
+                <div class="sandbox-actions">
+                    <button class="btn-icon" id="btn-sandbox-reset" title="รีเซ็ตโค้ดตั้งต้น"><i class="fa-solid fa-rotate-right"></i></button>
+                    <button class="btn-icon" id="btn-sandbox-clear" title="ล้างผลลัพธ์หน้าจอคอนโซล"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>
+            
+            <div class="sandbox-editor-container">
+                <div class="editor-header">
+                    <span>main.py</span>
+                    <span id="compiler-status" class="compiler-status-indicator loading">กำลังตระเตรียมตัวแปลภาษา...</span>
+                </div>
+                <textarea id="sandbox-code-editor" class="editor-textarea" spellcheck="false"># ร่ายคาถา Python ตรงนี้ และทดสอบพลังงาน!
+def cast_magic():
+    print("คุรุคุรุ~! หุ่นเชิดร่ายมนตร์สำเร็จ!")
+    for i in range(1, 4):
+        print(f"คลื่นพลังงานจำลองระลอกที่ {i}")
+
+cast_magic()
+</textarea>
+            </div>
+            
+            <div class="sandbox-run-bar">
+                <button class="btn btn-primary btn-full" id="btn-sandbox-run" disabled>
+                    <i class="fa-solid fa-play"></i> รันเวทมนตร์ (Run Code)
+                </button>
+            </div>
+            
+            <div class="sandbox-console-container">
+                <div class="console-header">เอาต์พุตผลการประมวลผล (Console Output)</div>
+                <pre class="console-output" id="sandbox-output">กำลังโหลดระบบวิญญาณ Pyodide ... โปรดรอสักครู่</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Herta Interactive Widget (Bottom Right) -->
+    <div class="herta-floating-widget" id="herta-floating-avatar">
+        <div class="herta-floating-chibi">
+            <img src="assets/herta_chibi.jpg" alt="Herta Chibi" id="herta-widget-img">
+        </div>
+        <div class="herta-floating-speech" id="herta-widget-speech">
+            <p>ยินดีต้อนรับสู่จักรวาลจำลอง!</p>
+        </div>
+    </div>
+
+    <!-- Contact Herta Modal -->
+    <div class="modal-overlay hidden" id="contact-modal">
+        <div class="contact-modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-envelope-open-text"></i> สลักสารติดต่อสมาคมอัจฉริยะ #83</h3>
+                <button class="close-modal-btn" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="contact-sender-name">ผู้ส่งเรื่องร้องเรียน:</label>
+                    <input type="text" id="contact-sender-name" placeholder="ชื่อของท่าน..." class="calc-input">
+                </div>
+                <div class="form-group">
+                    <label for="contact-msg">รายละเอียดเวทมนตร์/เรื่องจำลอง:</label>
+                    <textarea id="contact-msg" class="custom-textarea" rows="4" placeholder="โปรดเขียนความประสงค์ของท่านลงในนี้..."></textarea>
+                </div>
+                <button class="btn btn-primary btn-full" id="btn-send-message-herta"><i class="fa-solid fa-paper-plane"></i> ส่งสารทะลุห้วงอวกาศ</button>
+            </div>
+            <div class="modal-feedback-pane hidden" id="modal-reply">
+                <!-- Herta sassy response will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Prism Syntax Highlighting JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="index.js"></script>
+</body>
+</html>
