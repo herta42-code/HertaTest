@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a100c">
+    <title>Cards of Deception - Main Menu & Lobby</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/cardgame.css">
+</head>
+<body>
+
+    <!-- SCREEN 1: MAIN MENU -->
+    <div id="main-menu" class="screen">
+        <div class="game-title-container">
+            <h1 class="game-title">CARDS OF DECEPTION</h1>
+            <div class="game-subtitle" data-i18n="subtitle">Fantasy Social Deduction Card Game</div>
+        </div>
+
+        <div class="main-menu-container">
+            <button class="btn-pixel-main" id="btn-join-room" data-i18n="btn_join">JOIN GAME</button>
+            <button class="btn-pixel-main" id="btn-create-room" data-i18n="btn_create">CREATE ROOM</button>
+            <button class="btn-pixel-main" id="btn-menu-item-guide" data-i18n="btn_guide">GUIDE</button>
+        </div>
+
+        <!-- Network Status Indicator -->
+        <div class="top-nav-badges-wrap">
+            <div id="net-status-badge" class="net-status-badge">
+                <span id="net-status-dot"></span>
+                <span id="net-status-text">CONNECTING...</span>
+            </div>
+        </div>
+
+        <!-- Corner Action Buttons (Settings) -->
+        <button class="settings-corner-btn" id="btn-corner-settings" title="Audio Settings">⚙️</button>
+    </div>
+
+    <!-- SCREEN 2: JOIN ROOM VIEW -->
+    <div id="join-room" class="screen hidden" style="background-image: url('./photo/wallpaper/code_room/ห้องโถงกิลด์ใต้แสงโคม pixel art.png');">
+        <button class="btn-back" id="btn-back-join" data-i18n="btn_back">← BACK</button>
+        
+        <div class="modal-board">
+            <div class="board-title" data-i18n="join_title">JOIN GAME: ADVENTURERS ASSEMBLE!</div>
+
+            <!-- 4 Character Slots (2x2 Grid) -->
+            <div class="character-grid">
+                <div class="char-slot selected" data-char="1">
+                    <img src="./photo/character/โปรเจ็กต์ใหม่ 16 [3589520].png" alt="Character 1">
+                </div>
+                <div class="char-slot" data-char="2">
+                    <img src="./photo/character/โปรเจ็กต์ใหม่ 16 [60E167B].png" alt="Character 2">
+                </div>
+                <div class="char-slot" data-char="3">
+                    <img src="./photo/character/โปรเจ็กต์ใหม่ 16 [821AF33].png" alt="Character 3">
+                </div>
+                <div class="char-slot" data-char="4">
+                    <img src="./photo/character/โปรเจ็กต์ใหม่ 16 [B5F0626].png" alt="Character 4">
+                </div>
+            </div>
+
+            <div class="section-label" data-i18n="select_party">SELECT PARTY MEMBERS (4 SLOTS)</div>
+
+            <div class="input-group">
+                <div class="input-label" data-i18n="voucher_label">ENTER VOUCHER CODE</div>
+                <input type="text" id="voucher-code" class="pixel-input" placeholder="COD-XXXX  หรือเลข 4 ตัว" maxlength="12" data-i18n-placeholder="voucher_placeholder">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label" data-i18n="name_label">ENTER NAME</div>
+                <input type="text" id="user-name" class="pixel-input" placeholder="Username" maxlength="12" data-i18n-placeholder="name_placeholder">
+            </div>
+
+            <button class="btn-pixel-submit btn-plaque-gold" id="btn-begin-quest" data-i18n="btn_begin_quest">JOIN GAME</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: CREATE ROOM VIEW -->
+    <div id="create-room" class="screen hidden" style="background-image: url('./photo/wallpaper/code_room/ห้องโถงกิลด์ใต้แสงโคม pixel art.png');">
+        <button class="btn-back" id="btn-back-create" data-i18n="btn_back">← BACK</button>
+
+        <div class="modal-board">
+            <div class="board-title" data-i18n="create_title">CREATE ROOM: NEW ADVENTURE</div>
+
+            <div class="input-group" style="margin-top: 6px;">
+                <div class="input-label" data-i18n="host_label">HOST NAME</div>
+                <input type="text" id="create-host-name" class="pixel-input" placeholder="Host Name" maxlength="12" data-i18n-placeholder="host_placeholder">
+            </div>
+
+            <div class="input-group room-code-input-group">
+                <div class="input-label" data-i18n="room_code_label">ROOM CODE</div>
+                <div class="room-code-group">
+                    <input type="text" id="generated-room-code" class="pixel-input code-display-input" readonly value="COD-8899">
+                    <button type="button" id="btn-reroll-room-code" title="Randomize new room code" class="btn-pixel-reroll" data-i18n="btn_reroll">🎲 REROLL</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-label" data-i18n="max_players_label">PLAYERS (2-4)</div>
+                <input type="text" class="pixel-input" readonly value="2-4 PLAYERS" data-i18n-value="max_players_val" style="text-align: center; color: #ffea9f;">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label" data-i18n="mode_label">EXPANSION MODE</div>
+                <button type="button" id="create-mode-toggle" class="btn-pixel-mode-pill">
+                    <span id="create-mode-text">🔥 CLASSIC MODE (ดั้งเดิม)</span>
+                </button>
+            </div>
+
+            <button class="btn-pixel-submit btn-plaque-gold" id="btn-confirm-create" data-i18n="btn_confirm_create">CREATE & START LOBBY</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: WAITING LOBBY (4 PLAYERS) -->
+    <div id="lobby-room" class="screen hidden" style="background-image: url('./photo/wallpaper/code_room/ห้องโถงกิลด์ใต้แสงโคม pixel art.png');">
+        <button class="btn-back" id="btn-back-lobby" data-i18n="btn_back">← BACK</button>
+        <button class="settings-corner-btn" id="btn-corner-settings-lobby" title="Game Settings" style="top: 15px; right: 15px; bottom: auto; width: 44px; height: 44px; font-size: 20px;">⚙️</button>
+
+        <div class="modal-board lobby-modal-board">
+            <div class="board-title" id="lobby-title" data-i18n="lobby_title">WAITING LOBBY (1/4 PLAYERS)</div>
+
+            <!-- ROOM CODE BAR -->
+            <div class="lobby-bar lobby-code-bar">
+                <span class="lobby-bar-label" data-i18n="room_code_label">ROOM CODE</span>
+                <div class="lobby-code-group">
+                    <span id="lobby-room-code-display" class="lobby-code-val">COD-8899</span>
+                    <button type="button" id="btn-copy-room-code" class="btn-lobby-copy" title="Copy Room Code" data-i18n="btn_copy">📋 COPY</button>
+                    <button type="button" id="btn-lobby-qr" class="btn-lobby-copy btn-lobby-qr" title="Scan QR Code to Join from Mobile" data-i18n="btn_qr">📱 QR CODE</button>
+                </div>
+            </div>
+
+            <!-- EXPANSION MODE BAR -->
+            <div class="lobby-bar lobby-mode-bar">
+                <span class="lobby-bar-label">EXPANSION MODE</span>
+                <button type="button" id="lobby-mode-toggle" class="btn-pixel-mode-pill" title="Click to toggle Full Deck / Classic mode">
+                    <span id="lobby-mode-text">🔥 CLASSIC MODE (ดั้งเดิม)</span>
+                </button>
+            </div>
+
+            <!-- HOST NAME INPUT DISPLAY FIELD -->
+            <div class="lobby-host-row">
+                <span class="lobby-bar-label" data-i18n="host_name_label">HOST NAME 👑 ></span>
+                <input type="text" id="lobby-host-name-input" class="pixel-input lobby-host-input" readonly placeholder="Host Name" maxlength="12">
+            </div>
+
+            <!-- 4 PLAYER SLOTS (HORIZONTAL ROW) -->
+            <div class="lobby-slots-row">
+                <!-- Slot 1 (Host) -->
+                <div class="lobby-slot-wrapper">
+                    <div class="char-slot selected" id="lobby-slot-1">
+                        <img src="./photo/character/โปรเจ็กต์ใหม่ 16 [3589520].png" alt="Host Avatar">
+                    </div>
+                    <span id="lobby-name-1" class="lobby-slot-name host-name">👑 HOST</span>
+                </div>
+
+                <!-- Slot 2 -->
+                <div class="lobby-slot-wrapper">
+                    <button type="button" class="btn-lobby-kick" id="lobby-kick-btn-2" title="ลบผู้เล่นคนนี้ออก" style="display: none;">✕</button>
+                    <div class="char-slot" id="lobby-slot-2">
+                        <span class="lobby-hourglass">⏳</span>
+                    </div>
+                    <span id="lobby-name-2" class="lobby-slot-name">WAITING...</span>
+                </div>
+
+                <!-- Slot 3 -->
+                <div class="lobby-slot-wrapper">
+                    <button type="button" class="btn-lobby-kick" id="lobby-kick-btn-3" title="ลบผู้เล่นคนนี้ออก" style="display: none;">✕</button>
+                    <div class="char-slot" id="lobby-slot-3">
+                        <span class="lobby-hourglass">⏳</span>
+                    </div>
+                    <span id="lobby-name-3" class="lobby-slot-name">WAITING...</span>
+                </div>
+
+                <!-- Slot 4 -->
+                <div class="lobby-slot-wrapper">
+                    <button type="button" class="btn-lobby-kick" id="lobby-kick-btn-4" title="ลบผู้เล่นคนนี้ออก" style="display: none;">✕</button>
+                    <div class="char-slot" id="lobby-slot-4">
+                        <span class="lobby-hourglass">⏳</span>
+                    </div>
+                    <span id="lobby-name-4" class="lobby-slot-name">WAITING...</span>
+                </div>
+            </div>
+
+            <!-- STATUS TEXT -->
+            <div class="section-label" id="lobby-status-text" data-i18n="waiting_players">Waiting for player ... (1/4)</div>
+
+            <!-- BOTTOM HOST ACTIONS -->
+            <div id="lobby-host-controls" class="lobby-actions-row">
+                <button type="button" class="btn-plaque-blue" id="btn-add-bots" data-i18n="btn_play_bots">[ 🤖 PLAY WITH AI ]</button>
+                <div id="btn-start-lobby-wrap" style="flex: 1; display: flex; position: relative;">
+                    <button type="button" class="btn-plaque-stone disabled" id="btn-start-game-lobby" disabled title="ไม่สามารถเริ่มเกมได้เมื่ออยู่ในห้องคนเดียว (ต้องการผู้เล่นหรือบอทอย่างน้อย 2 คน)" data-i18n="btn_start_game">START GAME 🗡️</button>
+                </div>
+            </div>
+
+            <div id="lobby-guest-notice" style="display: none; margin-top: 15px; padding: 12px 16px; background: rgba(20, 10, 5, 0.9); border: 2px dashed #cca24a; border-radius: 8px; color: #ffd700; font-size: 11px; text-align: center; font-family: 'Press Start 2P', 'Sarabun', sans-serif;">
+                ⏳ WAITING FOR HOST TO START THE QUEST...
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 5: GAMEPLAY ARENA -->
+    <div id="gameplay-screen" class="screen hidden" style="background-image: url('./photo/wallpaper/main/แท่นเกมกลางหุบเขาปราสาทร้าง.png'); flex-direction: column; justify-content: space-between; padding: 10px; position: relative;">
+        <button class="btn-back" id="btn-back-gameplay" data-i18n="btn_back">← BACK</button>
+
+        <!-- FLYING CARD ANIMATION LAYER -->
+        <div id="gameplay-anim-layer" class="gameplay-anim-layer"></div>
+
+        <!-- DEALING ANNOUNCEMENT BANNER -->
+        <div id="gameplay-deal-banner" class="gameplay-deal-banner" style="display: none;">
+            <div class="deal-banner-sparkle">✦</div>
+            <div class="deal-banner-inner">
+                <span class="deal-banner-icon">🎴</span>
+                <span id="deal-banner-text" class="deal-banner-text" data-i18n="dealing_cards">DEALING CARDS...</span>
+                <span class="deal-banner-icon">🎴</span>
+            </div>
+            <div class="deal-banner-sparkle">✦</div>
+        </div>
+
+        <!-- 3D BLUFF REVEAL MODAL OVERLAY -->
+        <div id="bluff-reveal-modal" class="bluff-reveal-modal" style="display: none;">
+            <div id="bluff-reveal-title" style="font-size: 16px; color: #ffd700; font-family: 'Press Start 2P', sans-serif; text-shadow: 0 0 10px rgba(255,215,0,0.8); text-align: center; margin-bottom: 8px;">
+                🔍 BLUFF CHALLENGE!
+            </div>
+            <div id="bluff-reveal-subtitle" style="font-size: 12px; color: #ffe89e; font-family: 'Sarabun', sans-serif; text-align: center; margin-bottom: 12px;">
+                Player challenged cards!
+            </div>
+            <div id="bluff-reveal-cards" class="reveal-cards-container">
+                <!-- Revealed cards flip here -->
+            </div>
+            <div id="bluff-reveal-verdict" style="font-size: 14px; font-weight: bold; font-family: 'Press Start 2P', 'Sarabun', sans-serif; text-align: center; padding: 6px 16px; border-radius: 8px;">
+                <!-- Verdict result text -->
+            </div>
+        </div>
+
+        <!-- TOP BAR: TARGET RANK & DYNAMIC RULE & TURN -->
+        <div class="gameplay-top-banner">
+            <div class="target-rank-board" id="target-rank-board" title="Current Table Target Rank">
+                <img src="./photo/gameplay_exam/target_dart_icon.png" alt="Target" class="target-dart-icon">
+                <div class="target-rank-text-wrap">
+                    <span class="target-label-prefix">TARGET:</span>
+                    <span id="gameplay-target-rank" class="target-rank-val">TABLE K</span>
+                </div>
+            </div>
+            
+            <div id="dynamic-rule-banner" class="dynamic-rule-pill" title="Dynamic Rule for this round (Click for details)" style="cursor: pointer;">
+                <span id="dyn-rule-icon">🎲</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span id="dyn-rule-text">Standard Duel</span>
+                        <span id="dyn-rule-tag" style="font-size: 7px; background: rgba(255,215,0,0.25); color: #ffd700; border: 1px solid rgba(255,215,0,0.6); border-radius: 3px; padding: 1px 4px; font-family: 'Press Start 2P', sans-serif;">RULE</span>
+                    </div>
+                    <span id="dyn-rule-desc" style="font-size: 8px; color: #d8b4fe; font-family: 'Sarabun', sans-serif; font-weight: normal; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Standard rules apply. Play 1-3 cards normally.</span>
+                </div>
+            </div>
+
+            <div class="turn-board">
+                <span>TURN:</span>
+                <span id="gameplay-turn-text" class="turn-player">Host (YOU)</span>
+            </div>
+
+            <div class="turn-timer-board" id="turn-timer-board" title="Turn Timer">
+                <span class="timer-icon">⏳</span>
+                <span class="timer-label" data-i18n="timer_label">TIME:</span>
+                <span id="gameplay-turn-timer" class="turn-timer-val">45s</span>
+            </div>
+        </div>
+
+        <!-- 2-4 PLAYERS ARENA GRID -->
+        <div class="gp-arena-grid">
+            <!-- P2 (TOP) -->
+            <div id="gp-seat-2" class="gp-seat" style="grid-column: 2; grid-row: 1;">
+                <div class="gp-avatar-wrap">
+                    <div class="gp-turn-arrow">
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <span class="gp-turn-arrow-badge" data-i18n="turn_indicator">TURN</span>
+                            <span class="gp-turn-arrow-timer">45s</span>
+                        </div>
+                        <svg class="gp-turn-arrow-svg" viewBox="0 0 24 16" width="16" height="11">
+                            <path d="M12 16L2 2h20L12 16z" fill="#ffd700" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <!-- OPPONENT CARDS FAN (FACE-DOWN CARDS ABOVE HEAD) -->
+                    <div class="gp-opponent-cards-fan" id="gp-p2-cards-fan" title="Opponent Cards Remaining"></div>
+                    <!-- ITEM SLOTS BAR ABOVE HEAD -->
+                    <div class="gp-item-slots-bar" id="gp-p2-item-bar" title="Items: 2/2 Available">
+                        <span class="item-bar-segment green"></span>
+                        <span class="item-bar-segment green"></span>
+                    </div>
+                    <img class="gp-avatar-img" id="gp-p2-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [60E167B].png" alt="Player 2">
+                    <div class="gp-turn-badge">TURN</div>
+                </div>
+                <div class="gp-seat-info">
+                    <div class="gp-seat-name" id="gp-p2-name">Player 2</div>
+                    <div class="gp-role-badge" id="gp-p2-role" style="display: none;"><span class="role-icon">🔍</span> <span class="role-name">Inspector</span></div>
+                    <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+                        <div class="gp-seat-hp" id="gp-p2-hp">❤️❤️❤️</div>
+                        <div class="gp-shield-badge" id="gp-p2-shield" style="display: none;">🛡️ SHIELD</div>
+                    </div>
+                    <div class="gp-suspicion-badge" id="gp-p2-suspicion"><span class="suspicion-icon">👀</span> <span id="gp-p2-suspicion-text">ระแวง: 50%</span></div>
+                    <div class="gp-seat-cards" id="gp-p2-cards">6 Cards</div>
+                </div>
+            </div>
+
+            <!-- P3 (LEFT) -->
+            <div id="gp-seat-3" class="gp-seat" style="grid-column: 1; grid-row: 2;">
+                <div class="gp-avatar-wrap">
+                    <div class="gp-turn-arrow">
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <span class="gp-turn-arrow-badge" data-i18n="turn_indicator">TURN</span>
+                            <span class="gp-turn-arrow-timer">45s</span>
+                        </div>
+                        <svg class="gp-turn-arrow-svg" viewBox="0 0 24 16" width="16" height="11">
+                            <path d="M12 16L2 2h20L12 16z" fill="#ffd700" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <!-- OPPONENT CARDS FAN (FACE-DOWN CARDS ABOVE HEAD) -->
+                    <div class="gp-opponent-cards-fan" id="gp-p3-cards-fan" title="Opponent Cards Remaining"></div>
+                    <!-- ITEM SLOTS BAR ABOVE HEAD -->
+                    <div class="gp-item-slots-bar" id="gp-p3-item-bar" title="Items: 2/2 Available">
+                        <span class="item-bar-segment green"></span>
+                        <span class="item-bar-segment green"></span>
+                    </div>
+                    <img class="gp-avatar-img" id="gp-p3-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [821AF33].png" alt="Player 3">
+                    <div class="gp-turn-badge">TURN</div>
+                </div>
+                <div class="gp-seat-info">
+                    <div class="gp-seat-name" id="gp-p3-name">Player 3</div>
+                    <div class="gp-role-badge" id="gp-p3-role" style="display: none;"><span class="role-icon">🎭</span> <span class="role-name">Trickster</span></div>
+                    <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+                        <div class="gp-seat-hp" id="gp-p3-hp">❤️❤️❤️</div>
+                        <div class="gp-shield-badge" id="gp-p3-shield" style="display: none;">🛡️ SHIELD</div>
+                    </div>
+                    <div class="gp-suspicion-badge" id="gp-p3-suspicion"><span class="suspicion-icon">👀</span> <span id="gp-p3-suspicion-text">ระแวง: 50%</span></div>
+                    <div class="gp-seat-cards" id="gp-p3-cards">6 Cards</div>
+                </div>
+            </div>
+
+            <!-- CENTER TABLE FELT POKER MAT & CARD PILE -->
+            <div class="gp-center-table" id="gp-center-table">
+                <div class="table-card-stack" id="table-card-stack">
+                    <div class="stacked-card card-stack-1"></div>
+                    <div class="stacked-card card-stack-2"></div>
+                    <div class="table-pile-card-top" id="table-pile-card-top">
+                        <span class="card-logo">🎴</span>
+                        <span class="card-title">DECEPTION</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 4px;">
+                    <div class="table-pile-badge" id="table-pile-count">0 Cards on Table</div>
+                    <div class="draw-pile-badge" id="draw-pile-count" style="display: none;">📚 Deck: 24</div>
+                </div>
+                <div class="table-last-action" id="gameplay-log">Game Started! Select 1-3 cards to play.</div>
+            </div>
+
+            <!-- P4 (RIGHT) -->
+            <div id="gp-seat-4" class="gp-seat" style="grid-column: 3; grid-row: 2;">
+                <div class="gp-avatar-wrap">
+                    <div class="gp-turn-arrow">
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <span class="gp-turn-arrow-badge" data-i18n="turn_indicator">TURN</span>
+                            <span class="gp-turn-arrow-timer">45s</span>
+                        </div>
+                        <svg class="gp-turn-arrow-svg" viewBox="0 0 24 16" width="16" height="11">
+                            <path d="M12 16L2 2h20L12 16z" fill="#ffd700" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <!-- OPPONENT CARDS FAN (FACE-DOWN CARDS ABOVE HEAD) -->
+                    <div class="gp-opponent-cards-fan" id="gp-p4-cards-fan" title="Opponent Cards Remaining"></div>
+                    <!-- ITEM SLOTS BAR ABOVE HEAD -->
+                    <div class="gp-item-slots-bar" id="gp-p4-item-bar" title="Items: 2/2 Available">
+                        <span class="item-bar-segment green"></span>
+                        <span class="item-bar-segment green"></span>
+                    </div>
+                    <img class="gp-avatar-img" id="gp-p4-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [B5F0626].png" alt="Player 4">
+                    <div class="gp-turn-badge">TURN</div>
+                </div>
+                <div class="gp-seat-info">
+                    <div class="gp-seat-name" id="gp-p4-name">Player 4</div>
+                    <div class="gp-role-badge" id="gp-p4-role" style="display: none;"><span class="role-icon">💻</span> <span class="role-name">Hacker</span></div>
+                    <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+                        <div class="gp-seat-hp" id="gp-p4-hp">❤️❤️❤️</div>
+                        <div class="gp-shield-badge" id="gp-p4-shield" style="display: none;">🛡️ SHIELD</div>
+                    </div>
+                    <div class="gp-suspicion-badge" id="gp-p4-suspicion"><span class="suspicion-icon">👀</span> <span id="gp-p4-suspicion-text">ระแวง: 50%</span></div>
+                    <div class="gp-seat-cards" id="gp-p4-cards">6 Cards</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P1 (BOTTOM: HUMAN PLAYER & SMART HAND CARDS) -->
+        <div class="gp-p1-panel" id="gp-seat-1">
+            <div class="gp-p1-header">
+                <div class="gp-p1-user-wrap">
+                    <div class="gp-avatar-wrap gp-avatar-p1">
+                        <div class="gp-turn-arrow">
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <span class="gp-turn-arrow-badge" data-i18n="your_turn_indicator">YOUR TURN</span>
+                                <span class="gp-turn-arrow-timer">45s</span>
+                            </div>
+                            <svg class="gp-turn-arrow-svg" viewBox="0 0 24 16" width="16" height="11">
+                                <path d="M12 16L2 2h20L12 16z" fill="#ffd700" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <!-- ITEM SLOTS BAR ABOVE HEAD -->
+                        <div class="gp-item-slots-bar" id="gp-p1-item-bar" title="Items: 2/2 Available">
+                            <span class="item-bar-segment green"></span>
+                            <span class="item-bar-segment green"></span>
+                        </div>
+                        <img class="gp-avatar-img" id="gp-p1-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [3589520].png" alt="You">
+                        <div class="gp-turn-badge">YOUR TURN</div>
+                    </div>
+                    <div class="gp-seat-info">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div class="gp-seat-name" id="gp-p1-name" style="color: #00ff88;">Host (YOU)</div>
+                            <div class="gp-role-badge" id="gp-p1-role" style="display: none;"><span class="role-icon">🔍</span> <span class="role-name">Inspector</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div class="gp-seat-hp" id="gp-p1-hp">❤️❤️❤️</div>
+                            <div class="gp-shield-badge" id="gp-p1-shield" style="display: none;">🛡️ SHIELD</div>
+                        </div>
+                        <div class="gp-suspicion-badge" id="gp-p1-suspicion"><span class="suspicion-icon">👀</span> <span id="gp-p1-suspicion-text">ระแวง: 50%</span></div>
+                    </div>
+
+                    <!-- ACTIVE DEBUFFS DISPLAY (RIGHT SIDE OF CHARACTER) -->
+                    <div class="p1-debuffs-container" id="p1-debuffs-container" title="Active Debuffs">
+                        <div class="p1-debuff-pill debuff-none" title="ไม่มีสถานะผิดปกติ">
+                            <span class="debuff-icon">🛡️</span>
+                            <span class="debuff-label">ปกติ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p1-selection-hint" id="p1-selection-hint">
+                    <span id="p1-selection-text">Select 1-3 cards to play (or bluff!)</span>
+                </div>
+
+                <div class="gp-p1-actions">
+                    <button class="btn-pixel-submit btn-call-bluff-glow" id="btn-call-bluff" data-i18n="btn_call_bluff">🔥 CALL BLUFF</button>
+                    <button class="btn-pixel-submit btn-play-cards-glow" id="btn-play-cards" data-i18n="btn_play_cards">🎴 PLAY SELECTED CARDS</button>
+                </div>
+            </div>
+
+            <!-- SMART HAND CONTAINER -->
+            <div id="p1-hand-container" class="p1-hand-container">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR: OBJECTIVE & ROLE INFO BOX -->
+        <aside id="gp-right-info-box" class="gp-right-info-box" aria-label="Objective and Role Information">
+            <!-- Box Header with Minimize / Toggle Button -->
+            <div class="gp-info-box-header">
+                <div class="gp-info-header-title-group">
+                    <span class="info-header-icon">📜</span>
+                    <span class="info-header-title" data-i18n="quest_role_header">QUEST & ROLE</span>
+                </div>
+                <button type="button" id="btn-toggle-info-box" class="btn-toggle-info-box" title="Hide/Show Panel">
+                    <span id="toggle-info-icon">◂</span>
+                </button>
+            </div>
+
+            <div class="gp-info-box-content" id="gp-info-box-content">
+                <!-- 1. ROLE & SKILL CARD -->
+                <div class="gp-info-card gp-role-card">
+                    <div class="gp-info-card-header">
+                        <div class="gp-card-title-wrap">
+                            <span class="gp-role-icon-big" id="gp-role-icon">🎭</span>
+                            <div>
+                                <div class="gp-card-sublabel" data-i18n="your_role_label">YOUR ROLE (บทบาทของคุณ)</div>
+                                <div class="gp-card-main-title" id="gp-role-name">กำลังสุ่มบทบาท...</div>
+                            </div>
+                        </div>
+                        <span class="gp-role-badge-tag" id="gp-role-tag">ROLE</span>
+                    </div>
+
+                    <!-- Role Skill Section with Explanation -->
+                    <div class="gp-skill-section">
+                        <div class="gp-skill-title-row">
+                            <span class="gp-skill-badge" data-i18n="skill_badge">⚡ SKILL:</span>
+                            <span class="gp-skill-name" id="gp-role-skill-name">แอบส่องจับพิรุธ</span>
+                        </div>
+                        <div class="gp-skill-desc-box">
+                            <div class="gp-desc-header" data-i18n="skill_desc_label">📖 คำอธิบายสกิล:</div>
+                            <div class="gp-desc-body" id="gp-role-skill-desc">
+                                กำลังโหลดข้อมูลสกิลประจำตัว...
+                            </div>
+                        </div>
+
+                        <!-- USE SKILL BUTTON -->
+                        <button type="button" class="btn-role-skill" id="btn-role-skill" title="Activate unique Character Skill">
+                            <span id="role-skill-icon">✨</span>
+                            <span id="role-skill-text">USE SKILL (1/1)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. SECRET OBJECTIVE CARD -->
+                <div class="gp-info-card gp-objective-card" id="secret-objective-pill">
+                    <div class="gp-info-card-header">
+                        <div class="gp-card-title-wrap">
+                            <span class="gp-objective-icon-big" id="gp-objective-icon">🎯</span>
+                            <div>
+                                <div class="gp-card-sublabel" data-i18n="objective_sublabel">SECRET OBJECTIVE (ภารกิจลับ)</div>
+                                <div class="gp-card-main-title" id="so-title">กำลังสุ่มภารกิจลับ...</div>
+                            </div>
+                        </div>
+                        <span class="gp-obj-badge-tag" data-i18n="win_condition_tag">WIN COND</span>
+                    </div>
+
+                    <div class="gp-objective-desc-box">
+                        <div class="gp-desc-header" data-i18n="objective_desc_label">🏆 เงื่อนไขชนะทันที:</div>
+                        <div class="gp-desc-body" id="so-desc">
+                            กำลังสุ่มภารกิจลับ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Floating Quick Tab when panel is collapsed -->
+        <button type="button" id="btn-floating-info-tab" class="btn-floating-info-tab" style="display: none;" title="Open Quest & Role Info">
+            <span class="tab-icon">📜</span>
+            <span class="tab-text" data-i18n="tab_role_quest">ROLE & QUEST</span>
+        </button>
+
+        <!-- LEFT SIDEBAR: ITEMS INVENTORY BOX (MID-LEFT) -->
+        <aside id="gp-left-item-box" class="gp-left-item-box" aria-label="Items Inventory">
+            <div class="gp-item-box-header">
+                <div class="gp-item-header-title-group">
+                    <span class="item-header-icon">🎒</span>
+                    <span class="item-header-title" data-i18n="items_inventory_title">ITEMS (<span id="p1-items-count">2</span>)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <button type="button" id="btn-open-item-guide" title="คู่มือไอเทมทั้งหมด (Item Guide)" style="background: rgba(30, 15, 5, 0.85); border: 1px solid #cca24a; border-radius: 4px; color: #ffe89e; cursor: pointer; padding: 2px 7px; font-size: 11px;">📖</button>
+                    <button type="button" id="btn-toggle-item-box" class="btn-toggle-item-box" title="Hide/Show Items">
+                        <span id="toggle-item-icon">◂</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="gp-item-box-content" id="gp-item-box-content">
+                <!-- 2 Random Items will be rendered here -->
+            </div>
+        </aside>
+
+        <!-- Floating Quick Tab when Item box is collapsed -->
+        <button type="button" id="btn-floating-item-tab" class="btn-floating-item-tab" style="display: none;" title="Open Items Inventory">
+            <span class="tab-icon">🎒</span>
+            <span class="tab-text" data-i18n="tab_items">ITEMS (<span id="p1-tab-items-count">2</span>)</span>
+        </button>
+
+        <!-- ITEM TARGET SELECTION BANNER -->
+        <div id="item-target-banner" class="item-target-banner" style="display: none;">
+            <div class="item-target-banner-inner">
+                <span class="target-banner-icon" id="item-target-icon">🎯</span>
+                <span id="item-target-title" class="item-target-title" data-i18n="item_target_title">SELECT OPPONENT (Click Avatar)</span>
+                <button type="button" id="btn-cancel-item-target" class="btn-cancel-item-target" data-i18n="btn_cancel_target">✕ CANCEL</button>
+            </div>
+        </div>
+
+        <!-- ITEM REACTION MODAL (REFLECT DAMAGE & BLUFF SHIELD) -->
+        <div id="item-reaction-modal" class="item-reaction-modal" style="display: none;">
+            <div class="item-reaction-content">
+                <div class="reaction-title" id="item-reaction-title">⚡ ITEM REACTION!</div>
+                <div class="reaction-desc" id="item-reaction-desc">คุณกำลังจะได้รับความเสียหายจากการจับผิด!</div>
+                <div class="reaction-actions" id="item-reaction-buttons"></div>
+            </div>
+        </div>
+
+        <!-- ITEM USED ANNOUNCEMENT POPUP / MODAL -->
+        <div id="item-used-modal" class="item-used-modal" style="display: none;">
+            <div class="item-used-popup-board" id="item-used-popup-board">
+                <div class="item-used-popup-header">
+                    <span class="popup-sparkle">✦</span>
+                    <span class="popup-title-text" id="item-used-popup-title">⚡ ITEM ACTIVATED! ⚡</span>
+                    <span class="popup-sparkle">✦</span>
+                </div>
+                
+                <div class="item-used-popup-participants">
+                    <div class="participant-item user-side">
+                        <img id="item-used-user-avatar" class="participant-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [3589520].png" alt="user">
+                        <span id="item-used-user-name" class="participant-name">Player</span>
+                    </div>
+                    <div class="participant-arrow" id="item-used-arrow">➜</div>
+                    <div class="participant-item target-side" id="item-used-target-box" style="display: none;">
+                        <img id="item-used-target-avatar" class="participant-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [60E167B].png" alt="target">
+                        <span id="item-used-target-name" class="participant-name">Target</span>
+                    </div>
+                </div>
+
+                <div class="item-used-popup-card" id="item-used-popup-card">
+                    <div class="item-used-popup-icon-wrap" id="item-used-popup-icon-wrap">
+                        <span id="item-used-popup-icon" class="item-used-popup-icon">❄️</span>
+                    </div>
+                    <div class="item-used-popup-info">
+                        <div class="item-used-popup-item-name" id="item-used-popup-item-name">Freeze Turn</div>
+                        <div class="item-used-popup-item-desc" id="item-used-popup-item-desc">ข้ามตาเล่นของศัตรู 1 รอบ</div>
+                    </div>
+                </div>
+
+                <div class="item-used-popup-msg" id="item-used-popup-msg">
+                    <!-- Message text -->
+                </div>
+                
+                <div class="item-used-popup-dismiss-hint" id="item-used-dismiss-hint">
+                    (คลิกที่ใดก็ได้เพื่อปิด / Click to dismiss)
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE SIDEBAR BACKDROP OVERLAY -->
+        <div id="sidebar-backdrop" class="sidebar-backdrop" style="display: none;"></div>
+    </div>
+
+    <!-- INTEL MODAL (FOR HACKER DATA BREACH & INSPECTOR EYE) -->
+    <div id="intel-modal" class="modal-overlay">
+        <div class="modal-board" style="width: 480px; text-align: center;">
+            <div class="board-title" id="intel-modal-title">👁️ DECEPTION INTEL</div>
+            <div id="intel-modal-body" style="padding: 12px 6px; font-size: 13px; line-height: 1.6; color: #ffe89e; font-family: 'Sarabun', sans-serif;">
+                <!-- Content here -->
+            </div>
+            <button type="button" class="btn-pixel-submit" id="btn-close-intel" style="margin-top: 15px;">✓ ACKNOWLEDGED</button>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-board settings-modal-board">
+            <div class="board-title" data-i18n="settings_title">⚙️ GAME SETTINGS</div>
+
+            <div class="settings-list">
+                <!-- 1. LANGUAGE SETTING CARD -->
+                <div class="setting-card" id="card-setting-lang" style="cursor: pointer;">
+                    <div class="setting-info">
+                        <div class="setting-title-row">
+                            <span class="setting-icon">🌐</span>
+                            <span class="setting-title" data-i18n="lang_setting">LANGUAGE (ภาษา)</span>
+                        </div>
+                        <div class="setting-desc" data-i18n="lang_desc">Switch English / ภาษาไทย</div>
+                    </div>
+                    <button type="button" class="btn-lang-toggle" id="btn-lang-toggle">
+                        <span id="lang-toggle-text">ENGLISH</span>
+                    </button>
+                </div>
+
+                <!-- 2. MASTER AUDIO SETTING CARD -->
+                <div class="setting-card" id="card-setting-master" style="cursor: pointer;">
+                    <div class="setting-info">
+                        <div class="setting-title-row">
+                            <span class="setting-icon">🔈</span>
+                            <span class="setting-title" data-i18n="master_sound_setting">MASTER AUDIO (เสียงทั้งหมด)</span>
+                        </div>
+                        <div class="setting-desc" data-i18n="master_sound_desc">Turn all audio on or off (เปิด/ปิดเสียงทั้งหมด)</div>
+                    </div>
+                    <label class="pixel-toggle-switch" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="toggle-master-sound" checked>
+                        <span class="pixel-toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- 3. BGM SETTING CARD -->
+                <div class="setting-card" id="card-setting-bgm" style="cursor: pointer;">
+                    <div class="setting-info">
+                        <div class="setting-title-row">
+                            <span class="setting-icon">🎵</span>
+                            <span class="setting-title" data-i18n="bgm_setting">BACKGROUND MUSIC (BGM)</span>
+                        </div>
+                        <div class="setting-desc" data-i18n="bgm_desc">8-bit Tavern chiptune music</div>
+                    </div>
+                    <label class="pixel-toggle-switch" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="toggle-bgm" checked>
+                        <span class="pixel-toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- 4. SFX SETTING CARD -->
+                <div class="setting-card" id="card-setting-sfx" style="cursor: pointer;">
+                    <div class="setting-info">
+                        <div class="setting-title-row">
+                            <span class="setting-icon">⚔️</span>
+                            <span class="setting-title" data-i18n="sfx_setting">SOUND EFFECTS (SFX)</span>
+                        </div>
+                        <div class="setting-desc" data-i18n="sfx_desc">Card clicks and bluff sounds</div>
+                    </div>
+                    <label class="pixel-toggle-switch" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="toggle-sfx" checked>
+                        <span class="pixel-toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- 5. FULLSCREEN SETTING CARD -->
+                <div class="setting-card" id="card-setting-fullscreen" style="cursor: pointer;">
+                    <div class="setting-info">
+                        <div class="setting-title-row">
+                            <span class="setting-icon">⛶</span>
+                            <span class="setting-title" data-i18n="fullscreen_setting">FULLSCREEN (เต็มจอ)</span>
+                        </div>
+                        <div class="setting-desc" data-i18n="fullscreen_desc">Toggle fullscreen window mode</div>
+                    </div>
+                    <button type="button" class="btn-lang-toggle" id="btn-fullscreen-toggle">
+                        <span id="fullscreen-toggle-text">TOGGLE</span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn-pixel-submit" id="btn-close-settings" style="margin-top: 18px;" data-i18n="btn_close">✕ CLOSE SETTINGS</button>
+        </div>
+    </div>
+
+    <!-- SEAT / TURN DRAFT SELECTION MODAL (วัดความเร็วเลือกไพ่กำหนดลำดับที่นั่ง) -->
+    <div id="seat-selection-modal" class="modal-overlay">
+        <div class="seat-selection-board">
+            <div class="seat-selection-header">
+                <div class="seat-header-icon">⚡</div>
+                <div class="seat-selection-title">🎴 เลือกไพ่จัดลำดับการเล่น (SEAT & TURN DRAFT)</div>
+                <div class="seat-selection-subtitle">วัดความเร็ว! แย่งกันเลือกไพ่ 1 ใบเพื่อกำหนดลำดับการเล่น (ใครเลือกก่อนได้ก่อน ห้ามเลือกซ้ำ!)</div>
+                <div class="seat-selection-timer-wrap">
+                    <span class="seat-timer-label">⏱️ เวลาที่เหลือ:</span>
+                    <span id="seat-selection-timer" class="seat-timer-val">6s</span>
+                </div>
+            </div>
+
+            <!-- THE 4 CARDS CONTAINER -->
+            <div id="seat-cards-container" class="seat-cards-container">
+                <!-- 4 Interactive Cards rendered dynamically -->
+            </div>
+
+            <!-- STATUS MESSAGE / BANNER -->
+            <div id="seat-selection-status" class="seat-selection-status">
+                กรุณาคลิกเลือกไพ่ 1 ใบที่คุณต้องการให้เร็วที่สุด!
+            </div>
+        </div>
+    </div>
+
+    <!-- VICTORY / GAME OVER MODAL -->
+    <div id="victory-modal" class="modal-overlay">
+        <div class="modal-board victory-modal-board">
+            <div class="victory-header-crown">👑</div>
+            <div class="board-title victory-title" id="victory-title" data-i18n="victory_title">🏆 VICTORY! 🏆</div>
+
+            <div class="victory-winner-box">
+                <div class="victory-avatar-ring">
+                    <img id="victory-winner-avatar" src="./photo/character/โปรเจ็กต์ใหม่ 16 [3589520].png" alt="Winner Avatar">
+                    <span class="victory-crown-badge">👑 1ST</span>
+                </div>
+                <div class="victory-winner-name" id="victory-winner-name">PLAYER 1</div>
+                <div class="victory-winner-desc" id="victory-winner-desc" data-i18n="victory_subtitle">THE ULTIMATE DECEPTION MASTER!</div>
+            </div>
+
+            <!-- STANDINGS LIST -->
+            <div class="victory-standings-container">
+                <div class="victory-standings-title" id="victory-standings-title" data-i18n="victory_standings">FINAL STANDINGS</div>
+                <div id="victory-standings-list" class="victory-standings-list">
+                    <!-- Dynamic player standings cards -->
+                </div>
+            </div>
+
+            <div class="victory-action-buttons">
+                <button type="button" class="btn-pixel-submit btn-victory-restart" id="btn-victory-play-again" data-i18n="btn_play_again">🔄 PLAY AGAIN</button>
+                <button type="button" class="btn-pixel-submit btn-victory-menu" id="btn-victory-main-menu" data-i18n="btn_main_menu">🏠 MAIN MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPREHENSIVE GAME GUIDE MODAL (คู่มือเกมฉบับเต็ม - Authentic Pixel RPG Guide) -->
+    <div id="item-guide-modal" class="modal-overlay guide-modal-overlay">
+        <div class="modal-board guide-modal-board">
+            <!-- 4 Corner Metallic Screw Rivets on Board -->
+            <div class="guide-corner-rivet top-left"></div>
+            <div class="guide-corner-rivet top-right"></div>
+            <div class="guide-corner-rivet bottom-left"></div>
+            <div class="guide-corner-rivet bottom-right"></div>
+
+            <!-- Stylized Header: --{ 📖 CARDS OF DECEPTION GUIDE }-- -->
+            <div class="guide-modal-header">
+                <span class="guide-header-bracket">--{</span>
+                <img src="./photo/Guide/icons/book.png" alt="Guide Book" class="guide-header-pixel-icon">
+                <span class="guide-header-text" id="item-guide-modal-title">CARDS OF DECEPTION GUIDE</span>
+                <span class="guide-header-bracket">}--</span>
+            </div>
+            
+            <!-- Navigation Tabs matching reference image 1:1 with authentic 8-bit pixel icons -->
+            <div class="guide-tabs-nav">
+                <button type="button" class="btn-guide-tab active" data-tab="rules" id="tab-btn-rules">
+                    <img src="./photo/Guide/icons/scroll.png" alt="Rules" class="guide-tab-pixel-icon">
+                    <span class="guide-tab-label">RULES</span>
+                </button>
+                <button type="button" class="btn-guide-tab" data-tab="roles" id="tab-btn-roles">
+                    <img src="./photo/Guide/icons/shield.png" alt="Heroes" class="guide-tab-pixel-icon">
+                    <span class="guide-tab-label">HEROES</span>
+                </button>
+                <button type="button" class="btn-guide-tab" data-tab="dynrules" id="tab-btn-dynrules">
+                    <img src="./photo/Guide/icons/lightning.png" alt="Round Rules" class="guide-tab-pixel-icon">
+                    <span class="guide-tab-label">ROUND RULES</span>
+                </button>
+                <button type="button" class="btn-guide-tab" data-tab="items" id="tab-btn-items">
+                    <img src="./photo/Guide/icons/potion.png" alt="Items" class="guide-tab-pixel-icon">
+                    <span class="guide-tab-label">ITEMS</span>
+                </button>
+            </div>
+
+            <!-- Deep dark scrollable content box with custom pixel scrollbar -->
+            <div class="guide-scroll-wrapper">
+                <div id="item-guide-modal-list" class="guide-content-list">
+                    <!-- Dynamically rendered content for selected tab -->
+                </div>
+            </div>
+
+            <!-- Golden bottom button with 4 corner rivets -->
+            <button type="button" class="btn-guide-close-gold" id="btn-close-item-guide">
+                <span class="guide-btn-rivet top-left"></span>
+                <span class="guide-btn-rivet top-right"></span>
+                <span class="guide-btn-rivet bottom-left"></span>
+                <span class="guide-btn-rivet bottom-right"></span>
+                <span id="btn-close-item-guide-text">✕ CLOSE SETTINGS</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- RPG PIXEL NOTIFICATION POPUP MODAL (Matching photo/notifications 1:1) -->
+    <div id="rpg-notification-modal" class="rpg-notif-overlay" style="display: none;">
+        <div class="rpg-notif-container">
+            <!-- TOP BELL ICON WITH SPARKLES -->
+            <div class="rpg-notif-bell-wrapper">
+                <img src="./photo/notifications/bell_icon.png" alt="Notification Bell" class="rpg-notif-bell-img">
+            </div>
+
+            <!-- HEADER TITLE BADGE -->
+            <div class="rpg-notif-header-badge">
+                <span class="rpg-notif-star">✦</span>
+                <span id="rpg-notif-title" data-i18n="notif_title">แจ้งเตือน</span>
+                <span class="rpg-notif-star">✦</span>
+            </div>
+
+            <!-- MAIN BOARD -->
+            <div class="rpg-notif-board">
+                <!-- 4 CORNER BRACKETS -->
+                <span class="rpg-notif-corner top-left"></span>
+                <span class="rpg-notif-corner top-right"></span>
+                <span class="rpg-notif-corner bottom-left"></span>
+                <span class="rpg-notif-corner bottom-right"></span>
+
+                <!-- TOP DECORATIVE DIVIDER -->
+                <div class="rpg-notif-divider">
+                    <span class="rpg-divider-line"></span>
+                    <span class="rpg-divider-diamond">✦</span>
+                    <span class="rpg-divider-line"></span>
+                </div>
+
+                <!-- MESSAGE BODY -->
+                <div id="rpg-notif-message" class="rpg-notif-message">
+                    ห้องนี้ถูกปิดลงโดย Host แล้ว
+                </div>
+
+                <!-- BOTTOM DECORATIVE DIVIDER -->
+                <div class="rpg-notif-divider">
+                    <span class="rpg-divider-line"></span>
+                    <span class="rpg-divider-diamond">✦</span>
+                    <span class="rpg-divider-line"></span>
+                </div>
+            </div>
+
+            <!-- BOTTOM CONFIRM BUTTON -->
+            <button type="button" id="btn-rpg-notif-ok" class="btn-rpg-notif-ok" data-i18n="notif_btn_ok">
+                เข้าใจแล้ว
+            </button>
+        </div>
+    </div>
+
+    <!-- DEVICE CONNECT & QR CODE MODAL (เชื่อมต่อเล่นบนมือถือ & อุปกรณ์อื่น) -->
+    <div id="device-join-modal" class="modal-overlay">
+        <div class="modal-board device-modal-board">
+            <div class="board-title" id="device-modal-title" data-i18n="device_modal_title">📱 เล่นบนมือถือ & อุปกรณ์อื่น</div>
+            
+            <div class="device-modal-body">
+                <div class="device-qr-wrapper">
+                    <div id="device-qr-container" class="device-qr-box">
+                        <img id="device-qr-image" src="" alt="QR Code Join Room" class="device-qr-img">
+                        <div id="device-qr-loading" class="device-qr-spinner">กำลังโหลด QR Code...</div>
+                    </div>
+                    <div class="device-qr-hint" data-i18n="device_qr_hint">📷 ใช้กล้องมือถือ (iPhone / Android) สแกนเพื่อเข้าเล่นทันที</div>
+                </div>
+
+                <div class="device-link-section">
+                    <div class="device-room-highlight">
+                        <span class="device-room-label" data-i18n="room_code_label">ROOM CODE:</span>
+                        <span id="device-modal-room-code" class="device-room-val">COD-8899</span>
+                    </div>
+                    <div class="device-url-box">
+                        <input type="text" id="device-join-url-input" class="pixel-input device-url-input" readonly value="">
+                        <button type="button" id="btn-device-copy-link" class="btn-lobby-copy" data-i18n="btn_copy_link">📋 คัดลอกลิงก์</button>
+                    </div>
+                    <div class="device-ip-select-row" id="device-ip-select-row" style="display: none;">
+                        <span class="device-ip-label">Wi-Fi IP:</span>
+                        <select id="device-ip-select" class="device-ip-select"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="device-modal-actions">
+                <button type="button" class="btn-pixel-submit" id="btn-close-device-modal" data-i18n="btn_close_qr">✕ CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="./js/cardgameEngine.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Press Start 2P', cursive, 'Sarabun', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0b0704;
+    color: #ffe89e;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Authentic Human-Crafted Pixel Art Design System (Ref: Pixel Tavern / Liar's Bar Aesthetic) */
+@layer components {
+  
+  /* 1. PIXEL WOODEN BOARDS & CONTAINERS */
+  .pixel-board {
+    background-color: #8b6b47;
+    border: 6px solid #3d2511;
+    border-radius: 12px;
+    box-shadow: 
+      inset -6px -6px 0px #5c4329, 
+      inset 6px 6px 0px #b08d63, 
+      0 12px 28px rgba(0, 0, 0, 0.85);
+    position: relative;
+  }
+
+  .pixel-board-dark {
+    background-color: #38210f;
+    border: 5px solid #1f1207;
+    border-radius: 10px;
+    box-shadow: 
+      inset -5px -5px 0px #241408, 
+      inset 5px 5px 0px #5a3a1e, 
+      0 8px 20px rgba(0, 0, 0, 0.9);
+  }
+
+  .pixel-board-inner {
+    background-color: #231409;
+    border: 3px solid #4d3319;
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+    border-radius: 8px;
+  }
+
+  /* 2. PIXEL BUTTONS (PRIMARY, SECONDARY, DANGER, BACK) */
+  .btn-pixel-primary {
+    background: linear-gradient(180deg, #9d7d54 0%, #684d2b 100%);
+    border: 4px solid #3d2511;
+    box-shadow: inset -4px -4px 0px #422d17, inset 4px 4px 0px #c4a77d, 0 6px 0 #1f1207;
+    border-radius: 8px;
+    color: #fdf3cf;
+    text-shadow: 2px 2px 0px #38210b;
+    font-family: 'Press Start 2P', sans-serif;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .btn-pixel-primary:hover:not(:disabled) {
+    filter: brightness(1.18);
+    transform: translateY(-2px);
+    box-shadow: inset -4px -4px 0px #422d17, inset 4px 4px 0px #c4a77d, 0 8px 0 #1f1207;
+  }
+  .btn-pixel-primary:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: inset -4px -4px 0px #422d17, inset 4px 4px 0px #c4a77d, 0 2px 0 #1f1207;
+  }
+
+  .btn-pixel-secondary {
+    background: linear-gradient(180deg, #5a3f25 0%, #362415 100%);
+    border: 4px solid #23160b;
+    box-shadow: inset -4px -4px 0px #1a0f07, inset 4px 4px 0px #82603e, 0 6px 0 #120a04;
+    border-radius: 8px;
+    color: #ffe89e;
+    text-shadow: 2px 2px 0px #1a0f05;
+    font-family: 'Press Start 2P', sans-serif;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .btn-pixel-secondary:hover:not(:disabled),
+  .btn-pixel-secondary:focus,
+  .btn-pixel-secondary:focus-visible {
+    filter: brightness(1.18);
+    transform: none;
+    box-shadow: inset -4px -4px 0px #1a0f07, inset 4px 4px 0px #82603e, 0 6px 0 #120a04;
+    outline: none;
+  }
+  .btn-pixel-secondary:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: inset -4px -4px 0px #1a0f07, inset 4px 4px 0px #82603e, 0 2px 0 #120a04;
+  }
+
+  .btn-pixel-danger {
+    background: linear-gradient(180deg, #c93b3b 0%, #851f1f 100%);
+    border: 4px solid #4a0c0c;
+    box-shadow: inset -4px -4px 0px #380808, inset 4px 4px 0px #e06e6e, 0 6px 0 #210404;
+    border-radius: 8px;
+    color: #fff0f0;
+    text-shadow: 2px 2px 0px #380808;
+    font-family: 'Press Start 2P', sans-serif;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .btn-pixel-danger:hover:not(:disabled) {
+    filter: brightness(1.18);
+    transform: translateY(-2px);
+    box-shadow: inset -4px -4px 0px #380808, inset 4px 4px 0px #e06e6e, 0 8px 0 #210404;
+  }
+  .btn-pixel-danger:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: inset -4px -4px 0px #380808, inset 4px 4px 0px #e06e6e, 0 2px 0 #210404;
+  }
+
+  .btn-pixel-back {
+    background: #684d2b;
+    border: 3px solid #3d2511;
+    box-shadow: inset -3px -3px 0px #422d17, inset 3px 3px 0px #c4a77d, 0 4px 0 #1f1207;
+    border-radius: 6px;
+    color: #ffe6a3;
+    text-shadow: 1px 1px 0px #241407;
+    font-family: 'Press Start 2P', sans-serif;
+    transition: transform 0.08s ease, filter 0.12s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .btn-pixel-back:hover:not(:disabled) {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+  }
+  .btn-pixel-back:active:not(:disabled) {
+    transform: translateY(3px);
+  }
+
+  /* 3. PIXEL FORM INPUTS */
+  .pixel-input {
+    background-color: #24170d;
+    border: 3px solid #5a3f25;
+    box-shadow: inset 3px 3px 0px #120a04, inset -2px -2px 0px #3d2a19;
+    border-radius: 6px;
+    color: #ffe89e;
+    font-family: 'Press Start 2P', 'Sarabun', sans-serif;
+    padding: 10px 14px;
+    outline: none;
+  }
+  .pixel-input:focus {
+    border-color: #ffd700;
+    box-shadow: inset 3px 3px 0px #120a04, 0 0 10px rgba(255, 215, 0, 0.4);
+  }
+
+  /* 4. PIXEL BADGES & TEXT HEADINGS */
+  .pixel-title {
+    color: #ffe89e;
+    text-shadow: 
+      3px 3px 0px #4d2b0e,
+      -3px -3px 0px #4d2b0e,
+      3px -3px 0px #4d2b0e,
+      -3px 3px 0px #4d2b0e,
+      0px 6px 12px rgba(0, 0, 0, 0.9);
+    letter-spacing: 2px;
+  }
+
+  .pixel-badge {
+    background-color: #38210f;
+    border: 2px solid #ffd700;
+    box-shadow: inset -2px -2px 0px #241408, inset 2px 2px 0px #5a3a1e, 0 4px 8px rgba(0,0,0,0.6);
+    border-radius: 20px;
+    color: #ffe89e;
+  }
+
+  /* 5. PIXEL CARDS IN HAND & SELECTION */
+  .pixel-card {
+    background-color: #38210f;
+    border: 3px solid #cca24a;
+    box-shadow: inset -3px -3px 0px #231409, inset 3px 3px 0px #5c3c21, 0 6px 12px rgba(0,0,0,0.7);
+    border-radius: 8px;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+  }
+  .pixel-card.selected {
+    background-color: #ffe89e;
+    border-color: #00ff88;
+    box-shadow: inset -3px -3px 0px #cca24a, inset 3px 3px 0px #fff4cd, 0 0 15px rgba(0, 255, 136, 0.8);
+    transform: translateY(-12px);
+  }
+}
